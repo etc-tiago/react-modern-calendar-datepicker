@@ -1,5 +1,5 @@
 {
-  "name": "@dr-package/calendar",
+  "name": "dr-package-calendar",
   "version": "0.1.0",
   "main": "lib/index.js",
   "types": "index.d.ts",
