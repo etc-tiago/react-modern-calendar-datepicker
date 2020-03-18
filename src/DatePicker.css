@@ -4,23 +4,6 @@
   z-index: 10;
 }
 
-.DatePicker__input {
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 0.4em 0.8em;
-  font-family: inherit;
-  text-align: center;
-  font-size: 12px;
-}
-
-.DatePicker__input.-rtl {
-  direction: rtl;
-}
-
-.DatePicker__input::placeholder {
-  color: #979797;
-}
-
 .DatePicker__calendarArrow {
   position: absolute;
   width: 0;
