@@ -194,7 +194,7 @@ DatePicker.defaultProps = {
 
 DatePicker.propTypes = {
   wrapperClassName: PropTypes.string,
-  locale: PropTypes.oneOfType([PropTypes.oneOf(['en', 'fa']), LOCALE_SHAPE]),
+  locale: PropTypes.oneOfType([PropTypes.oneOf(['en']), LOCALE_SHAPE]),
 };
 
 export default DatePicker;

@@ -198,12 +198,5 @@ describe('DatePicker Visibility', () => {
     ).toStrictEqual(
       render(<DatePicker value={null} onChange={() => {}} locale={localeLanguages.en} />).container,
     );
-
-    // rtl language
-    expect(
-      render(<DatePicker value={null} onChange={() => {}} locale="fa" />).container,
-    ).toStrictEqual(
-      render(<DatePicker value={null} onChange={() => {}} locale={localeLanguages.fa} />).container,
-    );
   });
 });

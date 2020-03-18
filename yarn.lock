@@ -5819,10 +5819,6 @@ isurl@^1.0.0-alpha5:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
 
-jalaali-js@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/jalaali-js/-/jalaali-js-1.1.0.tgz#f0e942049273d11f7298a992356fc36ce2784863"
-
 jest-changed-files@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-24.9.0.tgz#08d8c15eb79a7fa3fc98269bc14b451ee82f8039"

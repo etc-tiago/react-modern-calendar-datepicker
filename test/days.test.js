@@ -102,7 +102,7 @@ describe('Calendar Days', () => {
     test('highlights weekends when passed shouldHighlightWeekends prop', () => {
       // Gregorian weekends
       const gregorianValue = { year: 2019, month: 10, day: 1 };
-      const { getDay, rerender } = renderCalendar({
+      const { getDay } = renderCalendar({
         shouldHighlightWeekends: true,
         value: gregorianValue,
       });
@@ -111,15 +111,6 @@ describe('Calendar Days', () => {
         .map(value => getDay(value))
         .every(day => day.classList.contains('-weekend'));
       expect(areAllGregorianWeekendsHighlighted).toBe(true);
-
-      // Persian weekends
-      const persianValue = { year: 1398, month: 8, day: 1 };
-      rerender(<Calendar locale="fa" value={persianValue} shouldHighlightWeekends />);
-      const persianValueMonthWeekendDays = [3, 10, 17, 24];
-      const areAllPersianWeekendsHighlighted = persianValueMonthWeekendDays
-        .map(value => getDay(utils('fa').getLanguageDigits(value)))
-        .every(day => day.classList.contains('-weekend'));
-      expect(areAllPersianWeekendsHighlighted).toBe(true);
     });
 
     test('hides all inactive days section days', () => {

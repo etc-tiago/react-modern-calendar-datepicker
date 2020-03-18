@@ -8,7 +8,6 @@ import {
   deepCloneObject,
 } from '../src/shared/generalUtils';
 import {
-  PERSIAN_MONTHS,
   GREGORIAN_MONTHS,
   TYPE_SINGLE_DATE,
   TYPE_RANGE,
@@ -81,47 +80,32 @@ describe('Utility Functions', () => {
 
   describe('Language Dependent Utilities', () => {
     let gregorianUtils = null;
-    let persianUtils = null;
 
     beforeAll(() => {
       gregorianUtils = utils();
-      persianUtils = utils('fa');
     });
 
     test('returns correct language digits', () => {
       const englishDigits = '0123';
-      const persianDigits = '۰۱۲۳';
       expect(gregorianUtils.getLanguageDigits(englishDigits)).toBe(englishDigits);
-      expect(persianUtils.getLanguageDigits(englishDigits)).toBe(persianDigits);
     });
 
     test('returns month name according to its index', () => {
-      expect(persianUtils.getMonthName(7)).toBe(PERSIAN_MONTHS[6]);
       expect(gregorianUtils.getMonthName(7)).toBe(GREGORIAN_MONTHS[6]);
     });
 
     test('returns month length', () => {
-      const persianMonthWith31Days = { year: 1398, month: 1, day: 1 };
-      const persianMonthWith30Days = { year: 1398, month: 7, day: 1 };
-      const persianLeapMonth = { year: 1395, month: 12, day: 1 };
       const gregorianMonthWith31Days = { year: 2019, month: 10, day: 1 };
       const gregorianMonthWith30Days = { year: 2019, month: 9, day: 1 };
       const gregorianLeapMonth = { year: 2020, month: 2, day: 1 };
-      expect(persianUtils.getMonthLength(persianMonthWith31Days)).toBe(31);
-      expect(persianUtils.getMonthLength(persianMonthWith30Days)).toBe(30);
-      expect(persianUtils.getMonthLength(persianLeapMonth)).toBe(30);
       expect(gregorianUtils.getMonthLength(gregorianMonthWith31Days)).toBe(31);
       expect(gregorianUtils.getMonthLength(gregorianMonthWith30Days)).toBe(30);
       expect(gregorianUtils.getMonthLength(gregorianLeapMonth)).toBe(29);
     });
 
     test('returns the first weekday of the passed month', () => {
-      const persianDate = { year: 1398, month: 1, day: 1 };
-      const persianMonthStartingWithSaturday = { year: 1398, month: 4, day: 1 };
       const gregorianDate = { year: 2019, month: 9, day: 1 };
-      expect(persianUtils.getMonthFirstWeekday(persianDate)).toBe(5);
       expect(gregorianUtils.getMonthFirstWeekday(gregorianDate)).toBe(0);
-      expect(persianUtils.getMonthFirstWeekday(persianMonthStartingWithSaturday)).toBe(0);
     });
 
     test('returns whether a day is before another', () => {
@@ -130,11 +114,6 @@ describe('Utility Functions', () => {
 
       expect(gregorianUtils.isBeforeDate(gregorianDay1, gregorianDay2)).toBe(true);
       expect(gregorianUtils.isBeforeDate(gregorianDay2, gregorianDay1)).toBe(false);
-
-      const persianDay1 = { year: 1398, month: 8, day: 1 };
-      const persianDay2 = { year: 1398, month: 8, day: 2 };
-      expect(persianUtils.isBeforeDate(persianDay1, persianDay2)).toBe(true);
-      expect(persianUtils.isBeforeDate(persianDay2, persianDay1)).toBe(false);
     });
 
     test('returns if a day is in a range', () => {
