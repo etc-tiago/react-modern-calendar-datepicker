@@ -17,49 +17,19 @@ const localeLanguages = {
     transformDigit(digit) {
       return digit;
     },
-    nextMonth: 'Next Month',
-    previousMonth: 'Previous Month',
-    openMonthSelector: 'Open Month Selector',
-    openYearSelector: 'Open Year Selector',
-    closeMonthSelector: 'Close Month Selector',
-    closeYearSelector: 'Close Year Selector',
-    from: 'from',
-    to: 'to',
-    defaultPlaceholder: 'Select...',
+    nextMonth: 'Próximo mês',
+    previousMonth: 'Mês anterior',
+    openMonthSelector: 'Abrir seletor de mês',
+    openYearSelector: 'Abrir seletor de ano',
+    closeMonthSelector: 'Fechar seletor de mês',
+    closeYearSelector: 'Fechar seletor de ano',
+    from: 'de',
+    to: 'para',
+    defaultPlaceholder: 'Selecionar...',
     digitSeparator: ',',
     yearLetterSkip: 0,
     isRtl: false,
   },
-  br: {
-    months: GREGORIAN_MONTHS,
-    weekDays: GREGORIAN_WEEK_DAYS,
-    weekStartingIndex: 0,
-    getToday(gregorainTodayObject) {
-      return gregorainTodayObject;
-    },
-    toNativeDate(date) {
-      return new Date(date.year, date.month - 1, date.day);
-    },
-    getMonthLength(date) {
-      return new Date(date.year, date.month, 0).getDate();
-    },
-    transformDigit(digit) {
-      return digit;
-    },
-    nextMonth: 'Next Month',
-    previousMonth: 'Previous Month',
-    openMonthSelector: 'Open Month Selector',
-    openYearSelector: 'Open Year Selector',
-    closeMonthSelector: 'Close Month Selector',
-    closeYearSelector: 'Close Year Selector',
-    from: 'from',
-    to: 'to',
-    defaultPlaceholder: 'Select...',
-    digitSeparator: ',',
-    yearLetterSkip: 0,
-    isRtl: false,
-  },
-  fa: {},
 };
 
 const getLocaleDetails = locale => {
