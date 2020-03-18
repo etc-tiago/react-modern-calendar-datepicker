@@ -1,50 +1,48 @@
 import PropTypes from 'prop-types';
 
-export const PERSIAN_NUMBERS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-
 export const GREGORIAN_MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
 ];
 
 export const GREGORIAN_WEEK_DAYS = [
   {
-    name: 'Sunday',
-    short: 'S',
+    name: 'Domingo',
+    short: 'D',
     isWeekend: true,
   },
   {
-    name: 'Monday',
-    short: 'M',
+    name: 'Segunda',
+    short: 'S',
   },
   {
-    name: 'Tuesday',
+    name: 'Terça',
     short: 'T',
   },
   {
-    name: 'Wednesday',
-    short: 'W',
+    name: 'Quarta',
+    short: 'Q',
   },
   {
-    name: 'Thursday',
-    short: 'T',
+    name: 'Quinta',
+    short: 'Q',
   },
   {
-    name: 'Friday',
-    short: 'F',
+    name: 'Sexta',
+    short: 'S',
   },
   {
-    name: 'Saturday',
+    name: 'Sabado',
     short: 'S',
     isWeekend: true,
   },
