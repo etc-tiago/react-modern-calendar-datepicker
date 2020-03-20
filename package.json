@@ -1,7 +1,7 @@
 {
   "name": "drpack-calendar",
   "version": "0.1.3",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "types": "index.d.ts",
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
@@ -9,14 +9,14 @@
     "lint:write": "prettier --write \"./src/**/*.js\"  \"./src/**/*.css\"",
     "test": "jest ./test --coverage",
     "test:watch": "jest ./test --watch",
-    "clean": "rimraf lib",
+    "clean": "rimraf dist",
     "build": "cross-env NODE_ENV=production rollup -c",
     "size": "npm run build && size-limit",
     "checkAll": "npm run size && npm run lint && npm run test",
     "contributors:generate": "npm all-contributors generate"
   },
   "files": [
-    "lib",
+    "dist",
     "index.d.ts"
   ],
   "repository": {
@@ -29,7 +29,7 @@
   "license": "MIT",
   "size-limit": [
     {
-      "path": "./lib/index.js",
+      "path": "./dist/index.js",
       "limit": "11 KB"
     }
   ],
