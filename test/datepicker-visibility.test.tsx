@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
-import DatePicker, { Calendar } from '../src';
-import { localeLanguages } from '../src/shared/localeLanguages';
+import { DatePicker, Calendar } from '../src';
 
 const renderOpenDatePicker = (renderProps = {}) => {
   const { getByTestId, ...otherSelectors } = render(<DatePicker {...renderProps} />);
@@ -196,7 +195,7 @@ describe('DatePicker Visibility', () => {
     expect(
       render(<DatePicker value={null} onChange={() => {}} locale="en" />).container,
     ).toStrictEqual(
-      render(<DatePicker value={null} onChange={() => {}} locale={localeLanguages.en} />).container,
+      render(<DatePicker value={null} onChange={() => {}} locale={'en'} />).container,
     );
   });
 });
