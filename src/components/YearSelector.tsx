@@ -1,11 +1,25 @@
-import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useEffect, FC } from 'react';
 
-import { MINIMUM_SELECTABLE_YEAR_SUBTRACT, MAXIMUM_SELECTABLE_YEAR_SUM } from '../shared/constants';
+import {
+  MINIMUM_SELECTABLE_YEAR_SUBTRACT,
+  MAXIMUM_SELECTABLE_YEAR_SUM,
+  DAY_SHAPE,
+} from '../shared/constants';
 import handleKeyboardNavigation from '../shared/keyboardNavigation';
 import { useLocaleUtils } from '../shared/hooks';
 
-const YearSelector = ({
+type YearSelector = {
+  selectorStartingYear: number;
+  selectorEndingYear: number;
+  isOpen: any;
+  activeDate: any;
+  onYearSelect: any;
+  maximumDate: DAY_SHAPE | null;
+  minimumDate: DAY_SHAPE | null;
+  locale: any;
+};
+
+export const YearSelector: FC<YearSelector> = ({
   isOpen,
   activeDate,
   onYearSelect,
@@ -15,14 +29,14 @@ const YearSelector = ({
   minimumDate,
   locale,
 }) => {
-  const wrapperElement = useRef(null);
-  const yearListElement = useRef(null);
+  const wrapperElement: any = useRef(null);
+  const yearListElement: any = useRef(null);
 
   const { getLanguageDigits, getToday } = useLocaleUtils(locale);
   const startingYearValue =
     selectorStartingYear || getToday().year - MINIMUM_SELECTABLE_YEAR_SUBTRACT;
   const endingYearValue = selectorEndingYear || getToday().year + MAXIMUM_SELECTABLE_YEAR_SUM;
-  const allYears = [];
+  const allYears: any[] = [];
   for (let i = startingYearValue; i <= endingYearValue; i += 1) {
     allYears.push(i);
   }
@@ -50,13 +64,13 @@ const YearSelector = ({
       return (
         <li key={item} className={`Calendar__yearSelectorItem ${isSelected ? '-active' : ''}`}>
           <button
-            tabIndex={isSelected && isOpen ? '0' : '-1'}
+            tabIndex={isSelected && isOpen ? 0 : -1}
             className="Calendar__yearSelectorText"
             type="button"
             onClick={() => {
               onYearSelect(item);
             }}
-            disabled={isAfterMaximumDate || isBeforeMinimumDate}
+            disabled={isAfterMaximumDate || isBeforeMinimumDate || false}
             aria-pressed={isSelected}
             data-is-default-selectable={isSelected}
           >
@@ -67,7 +81,7 @@ const YearSelector = ({
     });
   };
 
-  const handleKeyDown = e => {
+  const handleKeyDown = (e: any) => {
     handleKeyboardNavigation(e, { allowVerticalArrows: false });
   };
 
@@ -91,15 +105,3 @@ const YearSelector = ({
     </div>
   );
 };
-
-YearSelector.propTypes = {
-  selectorStartingYear: PropTypes.number,
-  selectorEndingYear: PropTypes.number,
-};
-
-YearSelector.defaultProps = {
-  selectorStartingYear: 0,
-  selectorEndingYear: 0,
-};
-
-export default YearSelector;

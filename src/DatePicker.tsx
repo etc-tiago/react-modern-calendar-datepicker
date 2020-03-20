@@ -1,12 +1,41 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import PropTypes from 'prop-types';
-
+import React, { useState, useEffect, useRef, useLayoutEffect, FC } from 'react';
 import { Calendar } from './Calendar';
 import DatePickerInput from './DatePickerInput';
 import { getValueType } from './shared/generalUtils';
 import { TYPE_SINGLE_DATE, TYPE_MUTLI_DATE, TYPE_RANGE, LOCALE_SHAPE } from './shared/constants';
 
-const DatePicker = ({
+type IDatePicker = {
+  wrapperClassName: string;
+  locale: string;
+
+  value: any;
+  onChange: any;
+  formatInputText: any;
+  inputPlaceholder: any;
+  inputClassName: any;
+  renderInput: any;
+
+  calendarClassName: any;
+  calendarTodayClassName: any;
+  calendarSelectedDayClassName: any;
+  calendarRangeStartClassName: any;
+  calendarRangeBetweenClassName: any;
+  calendarRangeEndClassName: any;
+  disabledDays: any;
+  onDisabledDayError: any;
+  colorPrimary: any;
+  colorPrimaryLight: any;
+  slideAnimationDuration: any;
+  minimumDate: any;
+  maximumDate: any;
+  selectorStartingYear: any;
+  selectorEndingYear: any;
+  shouldHighlightWeekends: any;
+  renderFooter: any;
+  customDaysClassName: any;
+};
+
+export const DatePicker: FC<IDatePicker> = ({
   value,
   onChange,
   formatInputText,
@@ -34,9 +63,9 @@ const DatePicker = ({
   renderFooter,
   customDaysClassName,
 }) => {
-  const calendarContainerElement = useRef(null);
-  const inputElement = useRef(null);
-  const shouldPreventToggle = useRef(false);
+  const calendarContainerElement: any = useRef(null);
+  const inputElement: any = useRef(null);
+  const shouldPreventToggle: any = useRef(false);
   const [isCalendarOpen, setCalendarVisiblity] = useState(false);
 
   useEffect(() => {
@@ -58,7 +87,7 @@ const DatePicker = ({
     if (shouldCloseCalendar) inputElement.current.blur();
   }, [value, isCalendarOpen]);
 
-  const handleBlur = e => {
+  const handleBlur = (e: any) => {
     e.persist();
     if (!isCalendarOpen) return;
     const isInnerElementFocused = calendarContainerElement.current.contains(e.relatedTarget);
@@ -102,14 +131,15 @@ const DatePicker = ({
     if (isOverflowingFromBottom) calendarContainerElement.current.classList.add('-top');
   }, [isCalendarOpen]);
 
-  const handleCalendarChange = newValue => {
+  const handleCalendarChange = (newValue: any) => {
     const valueType = getValueType(value);
     onChange(newValue);
     if (valueType === TYPE_SINGLE_DATE) setCalendarVisiblity(false);
     else if (valueType === TYPE_RANGE && newValue.from && newValue.to) setCalendarVisiblity(false);
   };
 
-  const handleKeyUp = ({ key }) => {
+  const handleKeyUp = (props: any) => {
+    const { key } = props;
     switch (key) {
       case 'Enter':
         setCalendarVisiblity(true);
@@ -186,15 +216,3 @@ const DatePicker = ({
     </div>
   );
 };
-
-DatePicker.defaultProps = {
-  wrapperClassName: '',
-  locale: 'en',
-};
-
-DatePicker.propTypes = {
-  wrapperClassName: PropTypes.string,
-  locale: PropTypes.oneOfType([PropTypes.oneOf(['en']), LOCALE_SHAPE]),
-};
-
-export default DatePicker;

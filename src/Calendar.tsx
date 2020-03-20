@@ -1,19 +1,42 @@
-import React, { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-
+import React, { FC, useState, useRef, useEffect } from 'react';
 import { getDateAccordingToMonth, shallowClone, getValueType } from './shared/generalUtils';
 import {
   DAY_SHAPE,
+  DAY_SHAPE_FromTo,
   TYPE_SINGLE_DATE,
   TYPE_RANGE,
   TYPE_MUTLI_DATE,
-  LOCALE_SHAPE,
 } from './shared/constants';
 import { useLocaleUtils, useLocaleLanguage } from './shared/hooks';
 
 import { Header, MonthSelector, YearSelector, DaysList } from './components';
 
-const Calendar = ({
+type ICalendar = {
+  value: DAY_SHAPE | DAY_SHAPE_FromTo | DAY_SHAPE[];
+  calendarClassName: string;
+  colorPrimary: string;
+  colorPrimaryLight: string;
+  slideAnimationDuration: string;
+  minimumDate: DAY_SHAPE | null;
+  maximumDate: DAY_SHAPE | null;
+  locale: string;
+  renderFooter: any;
+  customDaysClassName: DAY_SHAPE & { className: string }[];
+  //
+  onChange: any;
+  onDisabledDayError: any;
+  calendarTodayClassName: any;
+  calendarSelectedDayClassName: any;
+  calendarRangeStartClassName: any;
+  calendarRangeBetweenClassName: any;
+  calendarRangeEndClassName: any;
+  disabledDays: any;
+  selectorStartingYear: any;
+  selectorEndingYear: any;
+  shouldHighlightWeekends: any;
+};
+
+export const Calendar: FC<ICalendar> = ({
   value,
   onChange,
   onDisabledDayError,
@@ -36,7 +59,17 @@ const Calendar = ({
   renderFooter,
   customDaysClassName,
 }) => {
-  const calendarElement = useRef(null);
+  minimumDate = minimumDate || null;
+  maximumDate = maximumDate || null;
+  colorPrimary = colorPrimary || '#0eca2d';
+  colorPrimaryLight = colorPrimaryLight || '#cff4d5';
+  slideAnimationDuration = slideAnimationDuration || '0.4s';
+  calendarClassName = calendarClassName || '';
+  locale = locale || 'en';
+  value = value || null;
+  customDaysClassName = customDaysClassName || [];
+
+  const calendarElement: any = useRef(null);
   const [mainState, setMainState] = useState({
     activeDate: null,
     monthChangeDirection: '',
@@ -45,7 +78,8 @@ const Calendar = ({
   });
 
   useEffect(() => {
-    const handleKeyUp = ({ key }) => {
+    const handleKeyUp = (args: any) => {
+      const { key } = args;
       /* istanbul ignore else */
       if (key === 'Tab') calendarElement.current.classList.remove('-noFocusOutline');
     };
@@ -59,8 +93,8 @@ const Calendar = ({
   const { weekDays: weekDaysList, isRtl } = useLocaleLanguage(locale);
   const today = getToday();
 
-  const createStateToggler = property => () => {
-    setMainState({ ...mainState, [property]: !mainState[property] });
+  const createStateToggler = (property: any) => () => {
+    setMainState({ ...mainState, [property]: !(mainState as any)[property] });
   };
 
   const toggleMonthSelector = createStateToggler('isMonthSelectorOpen');
@@ -68,9 +102,11 @@ const Calendar = ({
 
   const getComputedActiveDate = () => {
     const valueType = getValueType(value);
-    if (valueType === TYPE_MUTLI_DATE && value.length) return shallowClone(value[0]);
+    if (valueType === TYPE_MUTLI_DATE && (value as any).length) {
+      return shallowClone((value as any)[0]);
+    }
     if (valueType === TYPE_SINGLE_DATE && value) return shallowClone(value);
-    if (valueType === TYPE_RANGE && value.from) return shallowClone(value.from);
+    if (valueType === TYPE_RANGE && (value as any).from) return shallowClone((value as any).from);
     return shallowClone(today);
   };
 
@@ -79,12 +115,12 @@ const Calendar = ({
     : getComputedActiveDate();
 
   const weekdays = weekDaysList.map(weekDay => (
-    <abbr key={weekDay.name} title={weekDay} className="Calendar__weekDay">
+    <abbr key={weekDay.name} title={weekDay.name} className="Calendar__weekDay">
       {weekDay.short}
     </abbr>
   ));
 
-  const handleMonthChange = direction => {
+  const handleMonthChange = (direction: any) => {
     setMainState({
       ...mainState,
       monthChangeDirection: direction,
@@ -94,12 +130,12 @@ const Calendar = ({
   const updateDate = () => {
     setMainState({
       ...mainState,
-      activeDate: getDateAccordingToMonth(activeDate, mainState.monthChangeDirection),
+      activeDate: getDateAccordingToMonth(activeDate, mainState.monthChangeDirection) as any,
       monthChangeDirection: '',
     });
   };
 
-  const selectMonth = newMonthNumber => {
+  const selectMonth = (newMonthNumber: any) => {
     setMainState({
       ...mainState,
       activeDate: { ...activeDate, month: newMonthNumber },
@@ -107,7 +143,7 @@ const Calendar = ({
     });
   };
 
-  const selectYear = year => {
+  const selectYear = (year: any) => {
     setMainState({
       ...mainState,
       activeDate: { ...activeDate, year },
@@ -115,15 +151,16 @@ const Calendar = ({
     });
   };
 
+  const calendarStyle: any = {
+    '--cl-color-primary': colorPrimary,
+    '--cl-color-primary-light': colorPrimaryLight,
+    '--animation-duration': slideAnimationDuration,
+  };
   return (
     <div
       className={`Calendar -noFocusOutline ${calendarClassName} -${isRtl ? 'rtl' : 'ltr'}`}
       role="grid"
-      style={{
-        '--cl-color-primary': colorPrimary,
-        '--cl-color-primary-light': colorPrimaryLight,
-        '--animation-duration': slideAnimationDuration,
-      }}
+      style={calendarStyle}
       ref={calendarElement}
     >
       <Header
@@ -185,37 +222,3 @@ const Calendar = ({
     </div>
   );
 };
-
-Calendar.defaultProps = {
-  minimumDate: null,
-  maximumDate: null,
-  colorPrimary: '#0eca2d',
-  colorPrimaryLight: '#cff4d5',
-  slideAnimationDuration: '0.4s',
-  calendarClassName: '',
-  locale: 'en',
-  value: null,
-  renderFooter: () => null,
-  customDaysClassName: [],
-};
-
-Calendar.propTypes = {
-  value: PropTypes.oneOfType([
-    PropTypes.shape(DAY_SHAPE),
-    PropTypes.shape({ from: PropTypes.shape(DAY_SHAPE), to: PropTypes.shape(DAY_SHAPE) }),
-    PropTypes.arrayOf(PropTypes.shape(DAY_SHAPE)),
-  ]),
-  calendarClassName: PropTypes.string,
-  colorPrimary: PropTypes.string,
-  colorPrimaryLight: PropTypes.string,
-  slideAnimationDuration: PropTypes.string,
-  minimumDate: PropTypes.shape(DAY_SHAPE),
-  maximumDate: PropTypes.shape(DAY_SHAPE),
-  locale: PropTypes.oneOfType([PropTypes.oneOf(['en', 'fa']), LOCALE_SHAPE]),
-  renderFooter: PropTypes.func,
-  customDaysClassName: PropTypes.arrayOf(
-    PropTypes.shape({ ...DAY_SHAPE, className: PropTypes.string }),
-  ),
-};
-
-export { Calendar };

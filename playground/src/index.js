@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import './fonts/fonts.css';
 import './DatePicker.css';
-import DatePicker from '../../src';
-import * as serviceWorker from './serviceWorker';
+import DatePicker from './dist';
 
 const App = () => {
   const [selectedDay, setValue] = useState(null);
@@ -12,4 +11,3 @@ const App = () => {
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));
-serviceWorker.unregister();

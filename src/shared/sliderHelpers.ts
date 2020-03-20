@@ -1,6 +1,7 @@
 import { getDateAccordingToMonth } from './generalUtils';
 
-const getSlideDate = ({ parent, isInitialActiveChild, activeDate, monthChangeDirection }) => {
+const getSlideDate = (args: any) => {
+  const { parent, isInitialActiveChild, activeDate, monthChangeDirection } = args;
   if (!parent) {
     return isInitialActiveChild ? activeDate : getDateAccordingToMonth(activeDate, 'NEXT');
   }
@@ -10,13 +11,14 @@ const getSlideDate = ({ parent, isInitialActiveChild, activeDate, monthChangeDir
   return isActiveSlide ? activeDate : getDateAccordingToMonth(activeDate, monthChangeDirection);
 };
 
-const animateContent = ({ parent, direction }) => {
+const animateContent = (args: any) => {
+  const { parent, direction } = args;
   const wrapperChildren = Array.from(parent.children);
-  const shownItem = wrapperChildren.find(child => child.classList.contains('-shown'));
-  const hiddenItem = wrapperChildren.find(child => child !== shownItem);
+  const shownItem: any = wrapperChildren.find((child: any) => child.classList.contains('-shown'));
+  const hiddenItem: any = wrapperChildren.find((child: any) => child !== shownItem);
   const baseClass = shownItem.classList[0];
   const isNextMonth = direction === 'NEXT';
-  const getAnimationClass = value => (value ? '-hiddenNext' : '-hiddenPrevious');
+  const getAnimationClass = (value: any) => (value ? '-hiddenNext' : '-hiddenPrevious');
   hiddenItem.style.transition = 'none';
   shownItem.style.transition = '';
   shownItem.className = `${baseClass} ${getAnimationClass(!isNextMonth)}`;
@@ -24,7 +26,8 @@ const animateContent = ({ parent, direction }) => {
   hiddenItem.classList.add('-shownAnimated');
 };
 
-const handleSlideAnimationEnd = ({ target }) => {
+const handleSlideAnimationEnd = (args: any) => {
+  const { target } = args;
   target.classList.remove('-hiddenNext');
   target.classList.remove('-hiddenPrevious');
   target.classList.replace('-shownAnimated', '-shown');
