@@ -4,15 +4,14 @@
   "main": "dist/index.js",
   "types": "index.d.ts",
   "scripts": {
-    "serve": "webpack-dev-server --open --mode development",
     "start": "rollup -c rollup.config.ts -w",
+    "serve": "webpack-dev-server --open --mode development",
     "lint": "concurrently \"eslint src\" \"prettier --check \"./src/**/*.css\"\" ",
     "lint:write": "prettier --write \"./src/**/*.js\"  \"./src/**/*.css\"",
     "test": "jest ./test --coverage",
     "test:watch": "jest ./test --watch",
     "clean": "rimraf dist",
-    "build": "cross-env NODE_ENV=production rollup -c",
-    "buildts": "tsc --module commonjs && rollup -c rollup.config.ts",
+    "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "size": "npm run build && size-limit",
     "checkAll": "npm run size && npm run lint && npm run test",
     "contributors:generate": "npm all-contributors generate"
@@ -35,7 +34,9 @@
       "limit": "11 KB"
     }
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@dr-package/date": "^0.7.0"
+  },
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
