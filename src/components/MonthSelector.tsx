@@ -2,8 +2,7 @@ import React, { useRef, useEffect } from 'react';
 
 import { isSameDay } from '../shared/generalUtils';
 import handleKeyboardNavigation from '../shared/keyboardNavigation';
-import { useLocaleUtils } from '../shared/hooks';
-import { GREGORIAN_MONTHS, isBefore } from '../shared/constants';
+import { GREGORIAN_MONTHS, isBefore, getMonthNumber } from '../shared/constants';
 
 export const MonthSelector = (props: any) => {
   const { activeDate, maximumDate, minimumDate, onMonthSelect, isOpen, locale } = props;
@@ -13,8 +12,6 @@ export const MonthSelector = (props: any) => {
     const classToggleMethod = isOpen ? 'add' : 'remove';
     monthSelector.current.classList[classToggleMethod]('-open');
   }, [isOpen]);
-
-  const { getMonthNumber } = useLocaleUtils(locale);
 
   const handleKeyDown = (e: any) => {
     handleKeyboardNavigation(e, { allowVerticalArrows: false });

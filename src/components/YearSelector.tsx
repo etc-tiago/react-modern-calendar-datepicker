@@ -4,9 +4,9 @@ import {
   MINIMUM_SELECTABLE_YEAR_SUBTRACT,
   MAXIMUM_SELECTABLE_YEAR_SUM,
   DAY_SHAPE,
+  getToday,
 } from '../shared/constants';
 import handleKeyboardNavigation from '../shared/keyboardNavigation';
-import { useLocaleUtils } from '../shared/hooks';
 
 type YearSelector = {
   selectorStartingYear: number;
@@ -32,7 +32,6 @@ export const YearSelector: FC<YearSelector> = ({
   const wrapperElement: any = useRef(null);
   const yearListElement: any = useRef(null);
 
-  const { getToday } = useLocaleUtils(locale);
   const startingYearValue =
     selectorStartingYear || getToday().year - MINIMUM_SELECTABLE_YEAR_SUBTRACT;
   const endingYearValue = selectorEndingYear || getToday().year + MAXIMUM_SELECTABLE_YEAR_SUM;

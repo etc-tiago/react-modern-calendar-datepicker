@@ -3,7 +3,6 @@ import React, { FC, useEffect, useRef } from 'react';
 import { DAY_SHAPE, CalendarLabels, getMonthName, isBefore } from '../shared/constants';
 import { isSameDay } from '../shared/generalUtils';
 import { getSlideDate, animateContent, handleSlideAnimationEnd } from '../shared/sliderHelpers';
-import { useLocaleUtils } from '../shared/hooks';
 
 type IHeader = {
   maximumDate: DAY_SHAPE | null;

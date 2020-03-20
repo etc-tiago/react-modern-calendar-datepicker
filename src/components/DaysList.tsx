@@ -15,9 +15,11 @@ import {
   GREGORIAN_WEEK_DAYS,
   getMonthName,
   isBefore,
+  getToday,
+  getMonthFirstWeekday,
+  checkDayInDayRange,
 } from '../shared/constants';
 import handleKeyboardNavigation from '../shared/keyboardNavigation';
-import { useLocaleUtils } from '../shared/hooks';
 
 type IDaysList = {
   onChange: any;
@@ -60,7 +62,6 @@ export const DaysList: FC<IDaysList> = ({
   customDaysClassName,
 }) => {
   const calendarSectionWrapper = useRef(null);
-  const { getToday, checkDayInDayRange, getMonthFirstWeekday } = useLocaleUtils(locale);
   const today = getToday();
 
   useEffect(() => {

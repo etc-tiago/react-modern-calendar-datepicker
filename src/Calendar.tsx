@@ -7,8 +7,8 @@ import {
   TYPE_RANGE,
   TYPE_MUTLI_DATE,
   GREGORIAN_WEEK_DAYS,
+  getToday,
 } from './shared/constants';
-import { useLocaleUtils } from './shared/hooks';
 
 import { Header, MonthSelector, YearSelector, DaysList } from './components';
 
@@ -93,7 +93,6 @@ export const Calendar: FC<ICalendar> = ({
     };
   });
 
-  const { getToday } = useLocaleUtils(locale);
   const today = getToday();
 
   const createStateToggler = (property: any) => () => {

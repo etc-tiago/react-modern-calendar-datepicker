@@ -24,6 +24,30 @@ export const GREGORIAN_WEEK_DAYS = [
 ];
 
 export const getMonthName = (month: number) => GREGORIAN_MONTHS[month - 1];
+export const getMonthNumber = (monthName: string) => GREGORIAN_MONTHS.indexOf(monthName) + 1;
+export const getToday = () => {
+  const todayDate = new Date();
+  const year = todayDate.getFullYear();
+  const month = todayDate.getMonth() + 1;
+  const day = todayDate.getDate();
+  return { year, month, day };
+};
+
+export const getMonthFirstWeekday = (date: DAY_SHAPE) => {
+  const gregorianDate = getNativeDate({ ...date, day: 1 });
+  const weekday = gregorianDate.getDay();
+  const dayIndex = weekday;
+  return dayIndex % 7;
+};
+
+export const checkDayInDayRange = (date: DAY_SHAPE_FromTo) => {
+  const { day, from, to } = date;
+  if (!day || !from || !to) return false;
+  const nativeDay = getNativeDate(day as any);
+  const nativeFrom = getNativeDate(from);
+  const nativeTo = getNativeDate(to);
+  return nativeDay > nativeFrom && nativeDay < nativeTo;
+};
 
 export const CalendarLabels = {
   nextMonth: 'Próximo mês',
