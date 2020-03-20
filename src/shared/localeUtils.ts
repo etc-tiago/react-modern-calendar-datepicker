@@ -1,7 +1,7 @@
 import { DAY_SHAPE, DAY_SHAPE_FromTo } from './constants';
 import getLocaleDetails from './localeLanguages';
 
-/*  export */ const utils = () => {
+const utils = () => {
   const {
     months: monthsList,
     getToday: localeGetToday,

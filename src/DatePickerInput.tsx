@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import { useLocaleUtils, useLocaleLanguage } from './shared/hooks';
 import { putZero, getValueType } from './shared/generalUtils';
@@ -13,10 +13,13 @@ type IDatePickerInput = {
   value: any;
 };
 
-const DatePickerInput = React.forwardRef((props: IDatePickerInput, ref: any) => {
+const funcStr = () => '';
+const funcNull = () => null;
+
+const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
   const { value } = props;
-  const formatInputText = props.formatInputText;
-  const renderInput = props.renderInput;
+  const formatInputText = props.formatInputText || funcStr;
+  const renderInput = props.renderInput || funcNull;
   const inputClassName = props.inputClassName || '';
   const inputPlaceholder = props.inputPlaceholder || '';
   const { getLanguageDigits } = useLocaleUtils();
@@ -71,23 +74,20 @@ const DatePickerInput = React.forwardRef((props: IDatePickerInput, ref: any) => 
   };
 
   const placeholderValue = inputPlaceholder || defaultPlaceholder;
-  const render = () => {
-    return (
-      renderInput({ ref }) || (
-        <input
-          data-testid="datepicker-input"
-          readOnly
-          ref={ref}
-          value={getValue()}
-          placeholder={placeholderValue}
-          className={`DatePicker__input -${isRtl ? 'rtl' : 'ltr'} ${inputClassName}`}
-          aria-label={placeholderValue}
-        />
-      )
-    );
-  };
 
-  return render();
+  return (
+    renderInput({ ref }) || (
+      <input
+        data-testid="datepicker-input"
+        readOnly
+        ref={ref}
+        value={getValue()}
+        placeholder={placeholderValue}
+        className={`DatePicker__input -${isRtl ? 'rtl' : 'ltr'} ${inputClassName}`}
+        aria-label={placeholderValue}
+      />
+    )
+  );
 });
 
 export default DatePickerInput;
