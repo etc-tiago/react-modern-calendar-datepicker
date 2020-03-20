@@ -1,4 +1,4 @@
-export const GREGORIAN_MONTHS = [
+export const monthsNames = [
   'Janeiro',
   'Fevereiro',
   'Março',
@@ -13,7 +13,7 @@ export const GREGORIAN_MONTHS = [
   'Dezembro',
 ];
 
-export const GREGORIAN_WEEK_DAYS = [
+export const weekDaysData = [
   { name: 'Domingo', short: 'D', isWeekend: true },
   { name: 'Segunda', short: 'S' },
   { name: 'Terça', short: 'T' },
@@ -23,8 +23,8 @@ export const GREGORIAN_WEEK_DAYS = [
   { name: 'Sabado', short: 'S', isWeekend: true },
 ];
 
-export const getMonthName = (month: number) => GREGORIAN_MONTHS[month - 1];
-export const getMonthNumber = (monthName: string) => GREGORIAN_MONTHS.indexOf(monthName) + 1;
+export const getMonthName = (month: number) => monthsNames[month - 1];
+export const getMonthNumber = (monthName: string) => monthsNames.indexOf(monthName) + 1;
 export const getToday = () => {
   const todayDate = new Date();
   const year = todayDate.getFullYear();
@@ -33,14 +33,14 @@ export const getToday = () => {
   return { year, month, day };
 };
 
-export const getMonthFirstWeekday = (date: DAY_SHAPE) => {
+export const getMonthFirstWeekday = (date: IDateNumbers) => {
   const gregorianDate = getNativeDate({ ...date, day: 1 });
   const weekday = gregorianDate.getDay();
   const dayIndex = weekday;
   return dayIndex % 7;
 };
 
-export const checkDayInDayRange = (date: DAY_SHAPE_FromTo) => {
+export const checkDayInDayRange = (date: IDateRange) => {
   const { day, from, to } = date;
   if (!day || !from || !to) return false;
   const nativeDay = getNativeDate(day as any);
@@ -61,38 +61,18 @@ export const CalendarLabels = {
   defaultPlaceholder: 'Selecionar...',
 };
 
-export type DAY_SHAPE = { year: number; month: number; day: number };
-export type DAY_SHAPE_FromTo = { day: DAY_SHAPE; from: DAY_SHAPE; to: DAY_SHAPE };
+export type IDateNumbers = { year: number; month: number; day: number };
+export type IDateRange = { day: IDateNumbers; from: IDateNumbers; to: IDateNumbers };
 
-export const MINIMUM_SELECTABLE_YEAR_SUBTRACT = 100;
+export const minYearToSubtract = 100;
 
-export const MAXIMUM_SELECTABLE_YEAR_SUM = 50;
+export const maxYearToSum = 50;
 
-/*  TODO: create a type and compare string sigle | range | multi */
-export const TYPE_SINGLE_DATE = 'SINGLE_DATE';
-export const TYPE_RANGE = 'RANGE';
-export const TYPE_MUTLI_DATE = 'MUTLI_DATE';
+export type ITypeSelect = 'single' | 'range' | 'multi';
 
-export type LOCALE_SHAPE = {
-  months: string[];
-  weekDays: { name: string; short: string; isWeekend: boolean }[];
-  weekStartingIndex: number;
-  getToday: any;
-  toNativeDate: any;
-  transformDigit: any;
-  nextMonth: string;
-  previousMonth: string;
-  openMonthSelector: string;
-  openYearSelector: string;
-  closeMonthSelector: string;
-  closeYearSelector: string;
-  from: string;
-  to: string;
-};
+export const getNativeDate = (date: IDateNumbers) => new Date(date.year, date.month - 1, date.day);
 
-export const getNativeDate = (date: DAY_SHAPE) => new Date(date.year, date.month - 1, date.day);
-
-export const isBefore = (day1: DAY_SHAPE | null, day2: DAY_SHAPE | null) => {
+export const isBefore = (day1: IDateNumbers | null, day2: IDateNumbers | null) => {
   if (!day1 || !day2) return false;
   return getNativeDate(day1) < getNativeDate(day2);
 };

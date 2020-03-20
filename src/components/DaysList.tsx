@@ -8,11 +8,8 @@ import {
   getValueType,
 } from '../shared/generalUtils';
 import {
-  DAY_SHAPE,
-  TYPE_SINGLE_DATE,
-  TYPE_RANGE,
-  TYPE_MUTLI_DATE,
-  GREGORIAN_WEEK_DAYS,
+  IDateNumbers,
+  weekDaysData,
   getMonthName,
   isBefore,
   getToday,
@@ -24,7 +21,7 @@ import handleKeyboardNavigation from '../shared/keyboardNavigation';
 type IDaysList = {
   onChange: any;
   onDisabledDayError: any;
-  disabledDays: DAY_SHAPE[];
+  disabledDays: IDateNumbers[];
   calendarTodayClassName: string;
   calendarSelectedDayClassName: string;
   calendarRangeStartClassName: string;
@@ -36,8 +33,8 @@ type IDaysList = {
   value: any;
   monthChangeDirection: any;
   onSlideChange: any;
-  minimumDate: DAY_SHAPE | null;
-  maximumDate: DAY_SHAPE | null;
+  minimumDate: IDateNumbers | null;
+  maximumDate: IDateNumbers | null;
   locale: string;
   customDaysClassName: any;
 };
@@ -116,11 +113,11 @@ export const DaysList: FC<IDaysList> = ({
     const getNewValue = () => {
       const valueType = getValueType(value);
       switch (valueType) {
-        case TYPE_SINGLE_DATE:
+        case 'single':
           return day;
-        case TYPE_RANGE:
+        case 'range':
           return getDayRangeValue(day);
-        case TYPE_MUTLI_DATE:
+        case 'multi':
           return getMultiDateValue(day);
       }
     };
@@ -130,8 +127,8 @@ export const DaysList: FC<IDaysList> = ({
 
   const isSingleDateSelected = (day: any) => {
     const valueType = getValueType(value);
-    if (valueType === TYPE_SINGLE_DATE) return isSameDay(day, value);
-    if (valueType === TYPE_MUTLI_DATE) {
+    if (valueType === 'single') return isSameDay(day, value);
+    if (valueType === 'multi') {
       return value.some((valueDay: any) => isSameDay(valueDay, day));
     }
   };
@@ -208,12 +205,12 @@ export const DaysList: FC<IDaysList> = ({
     const isNotInValidRange = isStandard && (isBeforeMinimumDate || isAfterMaximumDate);
     const isDisabled = isInDisabledDaysRange || isNotInValidRange;
     /* GREGORIAN_WEEK_DAYS.some */
-    const isWeekend = GREGORIAN_WEEK_DAYS.some(
+    const isWeekend = weekDaysData.some(
       (weekDayItem: any, weekDayItemIndex: any) =>
         weekDayItem.isWeekend && weekDayItemIndex === index,
     );
     const additionalClass = getDayClassNames({ ...dayItem, isWeekend, isStandard, isDisabled });
-    const dayLabel = `${GREGORIAN_WEEK_DAYS[index].name}, ${day} ${getMonthName(month)} ${year}`;
+    const dayLabel = `${weekDaysData[index].name}, ${day} ${getMonthName(month)} ${year}`;
     const isOnActiveSlide = month === activeDate.month;
     const dayStatus = getDayStatus(dayItem);
     const { isSelected, isStartingDayRange, isEndingDayRange, isWithinRange } = dayStatus;

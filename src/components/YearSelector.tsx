@@ -1,11 +1,6 @@
 import React, { useRef, useEffect, FC } from 'react';
 
-import {
-  MINIMUM_SELECTABLE_YEAR_SUBTRACT,
-  MAXIMUM_SELECTABLE_YEAR_SUM,
-  DAY_SHAPE,
-  getToday,
-} from '../shared/constants';
+import { minYearToSubtract, maxYearToSum, IDateNumbers, getToday } from '../shared/constants';
 import handleKeyboardNavigation from '../shared/keyboardNavigation';
 
 type YearSelector = {
@@ -14,8 +9,8 @@ type YearSelector = {
   isOpen: any;
   activeDate: any;
   onYearSelect: any;
-  maximumDate: DAY_SHAPE | null;
-  minimumDate: DAY_SHAPE | null;
+  maximumDate: IDateNumbers | null;
+  minimumDate: IDateNumbers | null;
   locale: any;
 };
 
@@ -32,9 +27,8 @@ export const YearSelector: FC<YearSelector> = ({
   const wrapperElement: any = useRef(null);
   const yearListElement: any = useRef(null);
 
-  const startingYearValue =
-    selectorStartingYear || getToday().year - MINIMUM_SELECTABLE_YEAR_SUBTRACT;
-  const endingYearValue = selectorEndingYear || getToday().year + MAXIMUM_SELECTABLE_YEAR_SUM;
+  const startingYearValue = selectorStartingYear || getToday().year - minYearToSubtract;
+  const endingYearValue = selectorEndingYear || getToday().year + maxYearToSum;
   const allYears: any[] = [];
   for (let i = startingYearValue; i <= endingYearValue; i += 1) {
     allYears.push(i);

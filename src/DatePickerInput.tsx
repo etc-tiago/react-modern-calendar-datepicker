@@ -1,12 +1,6 @@
 import React, { forwardRef } from 'react';
 import { putZero, getValueType } from './shared/generalUtils';
-import {
-  TYPE_SINGLE_DATE,
-  TYPE_RANGE,
-  TYPE_MUTLI_DATE,
-  DAY_SHAPE,
-  CalendarLabels,
-} from './shared/constants';
+import { IDateNumbers, CalendarLabels } from './shared/constants';
 
 type IDatePickerInput = {
   formatInputText: (props?: any) => string;
@@ -49,18 +43,18 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
   };
 
   const getMultiDateValue = () => {
-    return value.map((date: DAY_SHAPE) => date.day).join(`,`);
+    return value.map((date: IDateNumbers) => date.day).join(`,`);
   };
 
   const getValue = () => {
     if (formatInputText()) return formatInputText();
     const valueType = getValueType(value);
     switch (valueType) {
-      case TYPE_SINGLE_DATE:
+      case 'single':
         return getSingleDayValue();
-      case TYPE_RANGE:
+      case 'range':
         return getDayRangeValue();
-      case TYPE_MUTLI_DATE:
+      case 'multi':
         return getMultiDateValue();
     }
   };

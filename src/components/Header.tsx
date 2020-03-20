@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useRef } from 'react';
 
-import { DAY_SHAPE, CalendarLabels, getMonthName, isBefore } from '../shared/constants';
+import { IDateNumbers, CalendarLabels, getMonthName, isBefore } from '../shared/constants';
 import { isSameDay } from '../shared/generalUtils';
 import { getSlideDate, animateContent, handleSlideAnimationEnd } from '../shared/sliderHelpers';
 
 type IHeader = {
-  maximumDate: DAY_SHAPE | null;
-  minimumDate: DAY_SHAPE | null;
+  maximumDate: IDateNumbers | null;
+  minimumDate: IDateNumbers | null;
   onMonthChange: any;
   activeDate: any;
   monthChangeDirection: any;

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 
 import { isSameDay } from '../shared/generalUtils';
 import handleKeyboardNavigation from '../shared/keyboardNavigation';
-import { GREGORIAN_MONTHS, isBefore, getMonthNumber } from '../shared/constants';
+import { monthsNames, isBefore, getMonthNumber } from '../shared/constants';
 
 export const MonthSelector = (props: any) => {
   const { activeDate, maximumDate, minimumDate, onMonthSelect, isOpen, locale } = props;
@@ -18,7 +18,7 @@ export const MonthSelector = (props: any) => {
   };
 
   const renderMonthSelectorItems = () =>
-    GREGORIAN_MONTHS.map((persianMonth: any) => {
+    monthsNames.map((persianMonth: any) => {
       const monthNumber = getMonthNumber(persianMonth);
       const monthDate = { day: 1, month: monthNumber, year: activeDate.year };
       const isAfterMaximumDate =

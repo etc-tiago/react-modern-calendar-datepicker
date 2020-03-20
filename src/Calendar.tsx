@@ -1,30 +1,22 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
 import { getDateAccordingToMonth, shallowClone, getValueType } from './shared/generalUtils';
-import {
-  DAY_SHAPE,
-  DAY_SHAPE_FromTo,
-  TYPE_SINGLE_DATE,
-  TYPE_RANGE,
-  TYPE_MUTLI_DATE,
-  GREGORIAN_WEEK_DAYS,
-  getToday,
-} from './shared/constants';
+import { IDateNumbers, IDateRange, weekDaysData, getToday } from './shared/constants';
 
 import { Header, MonthSelector, YearSelector, DaysList } from './components';
 
 const renderNull = () => null;
 
 type ICalendar = {
-  value: DAY_SHAPE | DAY_SHAPE_FromTo | DAY_SHAPE[];
+  value: IDateNumbers | IDateRange | IDateNumbers[];
   calendarClassName: string;
   colorPrimary: string;
   colorPrimaryLight: string;
   slideAnimationDuration: string;
-  minimumDate: DAY_SHAPE | null;
-  maximumDate: DAY_SHAPE | null;
+  minimumDate: IDateNumbers | null;
+  maximumDate: IDateNumbers | null;
   locale: string;
   renderFooter: any;
-  customDaysClassName: DAY_SHAPE & { className: string }[];
+  customDaysClassName: IDateNumbers & { className: string }[];
   //
   onChange: any;
   onDisabledDayError: any;
@@ -104,11 +96,9 @@ export const Calendar: FC<ICalendar> = ({
 
   const getComputedActiveDate = () => {
     const valueType = getValueType(value);
-    if (valueType === TYPE_MUTLI_DATE && (value as any).length) {
-      return shallowClone((value as any)[0]);
-    }
-    if (valueType === TYPE_SINGLE_DATE && value) return shallowClone(value);
-    if (valueType === TYPE_RANGE && (value as any).from) return shallowClone((value as any).from);
+    if (valueType === 'multi' && (value as any).length) return shallowClone((value as any)[0]);
+    if (valueType === 'single' && value) return shallowClone(value);
+    if (valueType === 'range' && (value as any).from) return shallowClone((value as any).from);
     return shallowClone(today);
   };
 
@@ -116,7 +106,7 @@ export const Calendar: FC<ICalendar> = ({
     ? shallowClone(mainState.activeDate)
     : getComputedActiveDate();
 
-  const weekdays = GREGORIAN_WEEK_DAYS.map((weekDay: any) => (
+  const weekdays = weekDaysData.map((weekDay: any) => (
     <abbr key={weekDay.name} title={weekDay.name} className="Calendar__weekDay">
       {weekDay.short}
     </abbr>
