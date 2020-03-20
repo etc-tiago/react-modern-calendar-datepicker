@@ -2,7 +2,8 @@ import React, { useRef, useEffect } from 'react';
 
 import { isSameDay } from '../shared/generalUtils';
 import handleKeyboardNavigation from '../shared/keyboardNavigation';
-import { useLocaleUtils, useLocaleLanguage } from '../shared/hooks';
+import { useLocaleUtils } from '../shared/hooks';
+import { GREGORIAN_MONTHS, isBefore } from '../shared/constants';
 
 export const MonthSelector = (props: any) => {
   const { activeDate, maximumDate, minimumDate, onMonthSelect, isOpen, locale } = props;
@@ -13,22 +14,21 @@ export const MonthSelector = (props: any) => {
     monthSelector.current.classList[classToggleMethod]('-open');
   }, [isOpen]);
 
-  const { getMonthNumber, isBeforeDate } = useLocaleUtils(locale);
-  const { months: monthsList } = useLocaleLanguage(locale);
+  const { getMonthNumber } = useLocaleUtils(locale);
 
   const handleKeyDown = (e: any) => {
     handleKeyboardNavigation(e, { allowVerticalArrows: false });
   };
 
   const renderMonthSelectorItems = () =>
-    monthsList.map((persianMonth: any) => {
+    GREGORIAN_MONTHS.map((persianMonth: any) => {
       const monthNumber = getMonthNumber(persianMonth);
       const monthDate = { day: 1, month: monthNumber, year: activeDate.year };
       const isAfterMaximumDate =
-        maximumDate && isBeforeDate(maximumDate, { ...monthDate, month: monthNumber });
+        maximumDate && isBefore(maximumDate, { ...monthDate, month: monthNumber });
       const isBeforeMinimumDate =
         minimumDate &&
-        (isBeforeDate({ ...monthDate, month: monthNumber + 1 }, minimumDate) ||
+        (isBefore({ ...monthDate, month: monthNumber + 1 }, minimumDate) ||
           isSameDay({ ...monthDate, month: monthNumber + 1 }, minimumDate));
       const isSelected = monthNumber === activeDate.month;
       return (

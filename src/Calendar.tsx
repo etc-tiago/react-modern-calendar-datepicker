@@ -6,10 +6,13 @@ import {
   TYPE_SINGLE_DATE,
   TYPE_RANGE,
   TYPE_MUTLI_DATE,
+  GREGORIAN_WEEK_DAYS,
 } from './shared/constants';
-import { useLocaleUtils, useLocaleLanguage } from './shared/hooks';
+import { useLocaleUtils } from './shared/hooks';
 
 import { Header, MonthSelector, YearSelector, DaysList } from './components';
+
+const renderNull = () => null;
 
 type ICalendar = {
   value: DAY_SHAPE | DAY_SHAPE_FromTo | DAY_SHAPE[];
@@ -68,6 +71,7 @@ export const Calendar: FC<ICalendar> = ({
   locale = locale || 'en';
   value = value || null;
   customDaysClassName = customDaysClassName || [];
+  renderFooter = renderFooter || renderNull;
 
   const calendarElement: any = useRef(null);
   const [mainState, setMainState] = useState({
@@ -90,7 +94,6 @@ export const Calendar: FC<ICalendar> = ({
   });
 
   const { getToday } = useLocaleUtils(locale);
-  const { weekDays: weekDaysList, isRtl } = useLocaleLanguage(locale);
   const today = getToday();
 
   const createStateToggler = (property: any) => () => {
@@ -114,7 +117,7 @@ export const Calendar: FC<ICalendar> = ({
     ? shallowClone(mainState.activeDate)
     : getComputedActiveDate();
 
-  const weekdays = weekDaysList.map(weekDay => (
+  const weekdays = GREGORIAN_WEEK_DAYS.map((weekDay: any) => (
     <abbr key={weekDay.name} title={weekDay.name} className="Calendar__weekDay">
       {weekDay.short}
     </abbr>
@@ -158,7 +161,7 @@ export const Calendar: FC<ICalendar> = ({
   };
   return (
     <div
-      className={`Calendar -noFocusOutline ${calendarClassName} -${isRtl ? 'rtl' : 'ltr'}`}
+      className={`Calendar -noFocusOutline ${calendarClassName} -ltr`}
       role="grid"
       style={calendarStyle}
       ref={calendarElement}

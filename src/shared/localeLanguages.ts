@@ -6,7 +6,6 @@ export const localeLanguages = {
   weekStartingIndex: 0,
   getToday: (gregorainTodayObject: any) => gregorainTodayObject,
   toNativeDate: (date: DAY_SHAPE) => new Date(date.year, date.month - 1, date.day),
-  getMonthLength: (date: DAY_SHAPE) => new Date(date.year, date.month, 0).getDate(),
   transformDigit: (digit: any) => digit,
   nextMonth: 'Próximo mês',
   previousMonth: 'Mês anterior',
@@ -16,10 +15,6 @@ export const localeLanguages = {
   closeYearSelector: 'Fechar seletor de ano',
   from: 'de',
   to: 'para',
-  defaultPlaceholder: 'Selecionar...',
-  digitSeparator: ',',
-  yearLetterSkip: 0,
-  isRtl: false,
 };
 
 const getLocaleDetails = () => localeLanguages;

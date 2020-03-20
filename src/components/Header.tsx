@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useRef } from 'react';
 
-import { DAY_SHAPE } from '../shared/constants';
+import { DAY_SHAPE, CalendarLabels, getMonthName, isBefore } from '../shared/constants';
 import { isSameDay } from '../shared/generalUtils';
 import { getSlideDate, animateContent, handleSlideAnimationEnd } from '../shared/sliderHelpers';
-import { useLocaleUtils, useLocaleLanguage } from '../shared/hooks';
+import { useLocaleUtils } from '../shared/hooks';
 
 type IHeader = {
   maximumDate: DAY_SHAPE | null;
@@ -33,17 +33,6 @@ export const Header: FC<IHeader> = ({
   const headerElement: any = useRef(null);
   const monthYearWrapperElement: any = useRef(null);
 
-  const { getMonthName, isBeforeDate, getLanguageDigits } = useLocaleUtils(locale);
-  const {
-    isRtl,
-    nextMonth,
-    previousMonth,
-    openMonthSelector,
-    closeMonthSelector,
-    openYearSelector,
-    closeYearSelector,
-  } = useLocaleLanguage(locale);
-
   useEffect(() => {
     if (!monthChangeDirection) return;
     animateContent({
@@ -69,7 +58,6 @@ export const Header: FC<IHeader> = ({
     const secondaryElement = hasMonthSelectorToggled ? yearText : monthText;
 
     let translateXDirection = hasMonthSelectorToggled ? 1 : -1;
-    if (isRtl) translateXDirection *= -1;
     const scale = !isOpen ? 0.95 : 1;
     const translateX = !isOpen ? 0 : `${(translateXDirection * secondaryElement.offsetWidth) / 2}`;
     if (!isOpen) {
@@ -104,20 +92,20 @@ export const Header: FC<IHeader> = ({
       activeDate,
       parent: monthYearWrapperElement.current,
     });
-    const year = getLanguageDigits(date.year);
+    const year = date.year;
     const month = getMonthName(date.month);
     return { month, year };
   };
 
   const isNextMonthArrowDisabled =
-    maximumDate &&
-    isBeforeDate(maximumDate, { ...activeDate, month: activeDate.month + 1, day: 1 });
+    maximumDate && isBefore(maximumDate, { ...activeDate, month: activeDate.month + 1, day: 1 });
   const isPreviousMonthArrowDisabled =
     minimumDate &&
-    (isBeforeDate({ ...activeDate, day: 1 }, minimumDate) ||
+    (isBefore({ ...activeDate, day: 1 }, minimumDate) ||
       isSameDay(minimumDate, { ...activeDate, day: 1 }));
 
   const onMonthChangeTrigger = (direction: any) => {
+    /* Array.from(monthYearWrapperElement.current.children).some */
     const isMonthChanging = Array.from(
       monthYearWrapperElement.current.children,
     ).some((child: any) => child.classList.contains('-shownAnimated'));
@@ -144,7 +132,11 @@ export const Header: FC<IHeader> = ({
           onClick={onMonthSelect}
           type="button"
           className="Calendar__monthText"
-          aria-label={isMonthSelectorOpen ? closeMonthSelector : openMonthSelector}
+          aria-label={
+            isMonthSelectorOpen
+              ? CalendarLabels.closeMonthSelector
+              : CalendarLabels.openMonthSelector
+          }
           tabIndex={isActiveMonth ? 0 : -1}
           {...hiddenStatus}
         >
@@ -154,7 +146,9 @@ export const Header: FC<IHeader> = ({
           onClick={onYearSelect}
           type="button"
           className="Calendar__yearText"
-          aria-label={isYearSelectorOpen ? closeYearSelector : openYearSelector}
+          aria-label={
+            isYearSelectorOpen ? CalendarLabels.closeYearSelector : CalendarLabels.openYearSelector
+          }
           tabIndex={isActiveMonth ? 0 : -1}
           {...hiddenStatus}
         >
@@ -171,7 +165,7 @@ export const Header: FC<IHeader> = ({
         onClick={() => {
           onMonthChangeTrigger('PREVIOUS');
         }}
-        aria-label={previousMonth}
+        aria-label={CalendarLabels.previousMonth}
         type="button"
         disabled={isPreviousMonthArrowDisabled || false}
       >
@@ -190,7 +184,7 @@ export const Header: FC<IHeader> = ({
         onClick={() => {
           onMonthChangeTrigger('NEXT');
         }}
-        aria-label={nextMonth}
+        aria-label={CalendarLabels.nextMonth}
         type="button"
         disabled={isNextMonthArrowDisabled || false}
       >

@@ -4,6 +4,8 @@ import DatePickerInput from './DatePickerInput';
 import { getValueType } from './shared/generalUtils';
 import { TYPE_SINGLE_DATE, TYPE_MUTLI_DATE, TYPE_RANGE, LOCALE_SHAPE } from './shared/constants';
 
+const renderNull = () => null;
+
 type IDatePicker = {
   wrapperClassName: string;
   locale: string;
@@ -67,6 +69,8 @@ export const DatePicker: FC<IDatePicker> = ({
   const inputElement: any = useRef(null);
   const shouldPreventToggle: any = useRef(false);
   const [isCalendarOpen, setCalendarVisiblity] = useState(false);
+
+  renderFooter = renderFooter || renderNull;
 
   useEffect(() => {
     const handleBlur = () => {

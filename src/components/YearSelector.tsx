@@ -32,7 +32,7 @@ export const YearSelector: FC<YearSelector> = ({
   const wrapperElement: any = useRef(null);
   const yearListElement: any = useRef(null);
 
-  const { getLanguageDigits, getToday } = useLocaleUtils(locale);
+  const { getToday } = useLocaleUtils(locale);
   const startingYearValue =
     selectorStartingYear || getToday().year - MINIMUM_SELECTABLE_YEAR_SUBTRACT;
   const endingYearValue = selectorEndingYear || getToday().year + MAXIMUM_SELECTABLE_YEAR_SUM;
@@ -74,7 +74,7 @@ export const YearSelector: FC<YearSelector> = ({
             aria-pressed={isSelected}
             data-is-default-selectable={isSelected}
           >
-            {getLanguageDigits(item)}
+            {item}
           </button>
         </li>
       );

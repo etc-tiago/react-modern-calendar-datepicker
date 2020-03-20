@@ -1,10 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const htmlWebpackPlugin = new HtmlWebpackPlugin({
-  template: path.join(__dirname, 'playground/src/index.html'),
-  filename: './index.html',
-});
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: path.join(__dirname, 'playground/src/index.js'),
@@ -37,7 +33,13 @@ module.exports = {
       },
     ],
   },
-  plugins: [htmlWebpackPlugin],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'playground/src/index.html'),
+      filename: './index.html',
+    }),
+    new CopyPlugin([{ from: './dist', to: 'playground/src/dist' }]),
+  ],
   resolve: {
     extensions: ['.js', '.jsx'],
   },

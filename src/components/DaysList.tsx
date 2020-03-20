@@ -1,5 +1,5 @@
 import React, { FC, useRef, useEffect } from 'react';
-
+import { getDaysInMonth } from 'date-fns';
 import { getSlideDate, handleSlideAnimationEnd, animateContent } from '../shared/sliderHelpers';
 import {
   deepCloneObject,
@@ -7,9 +7,17 @@ import {
   createUniqueRange,
   getValueType,
 } from '../shared/generalUtils';
-import { DAY_SHAPE, TYPE_SINGLE_DATE, TYPE_RANGE, TYPE_MUTLI_DATE } from '../shared/constants';
+import {
+  DAY_SHAPE,
+  TYPE_SINGLE_DATE,
+  TYPE_RANGE,
+  TYPE_MUTLI_DATE,
+  GREGORIAN_WEEK_DAYS,
+  getMonthName,
+  isBefore,
+} from '../shared/constants';
 import handleKeyboardNavigation from '../shared/keyboardNavigation';
-import { useLocaleUtils, useLocaleLanguage } from '../shared/hooks';
+import { useLocaleUtils } from '../shared/hooks';
 
 type IDaysList = {
   onChange: any;
@@ -52,16 +60,7 @@ export const DaysList: FC<IDaysList> = ({
   customDaysClassName,
 }) => {
   const calendarSectionWrapper = useRef(null);
-  const { isRtl, weekDays: weekDaysList } = useLocaleLanguage(locale);
-  const {
-    getToday,
-    isBeforeDate,
-    checkDayInDayRange,
-    getMonthFirstWeekday,
-    getMonthLength,
-    getLanguageDigits,
-    getMonthName,
-  } = useLocaleUtils(locale);
+  const { getToday, checkDayInDayRange, getMonthFirstWeekday } = useLocaleUtils(locale);
   const today = getToday();
 
   useEffect(() => {
@@ -81,7 +80,7 @@ export const DaysList: FC<IDaysList> = ({
     const { from, to } = dayRangeValue;
 
     // swap from and to values if from is later than to
-    if (isBeforeDate(dayRangeValue.to, dayRangeValue.from)) {
+    if (isBefore(dayRangeValue.to, dayRangeValue.from)) {
       dayRangeValue.from = to;
       dayRangeValue.to = from;
     }
@@ -103,7 +102,10 @@ export const DaysList: FC<IDaysList> = ({
   };
 
   const getMultiDateValue = (day: any) => {
-    const isAlreadyExisting = value.some((valueDay: any) => isSameDay(valueDay, day));
+    /* isAlreadyExisting */
+    const isAlreadyExisting = value.some((valueDay: any) => {
+      return isSameDay(valueDay, day);
+    });
     const addedToValue = [...value, day];
     const removedFromValue = value.filter((valueDay: any) => !isSameDay(valueDay, day));
     return isAlreadyExisting ? removedFromValue : addedToValue;
@@ -168,12 +170,14 @@ export const DaysList: FC<IDaysList> = ({
   const getViewMonthDays = (date: any) => {
     // to match month starting date with the correct weekday label
     const prependingBlankDays = createUniqueRange(getMonthFirstWeekday(date), 'starting-blank');
-    const standardDays = createUniqueRange(getMonthLength(date)).map((day: any) => ({
-      ...day,
-      isStandard: true,
-      month: date.month,
-      year: date.year,
-    }));
+    const standardDays = createUniqueRange(getDaysInMonth(new Date(date.year, date.month - 1))).map(
+      (day: any) => ({
+        ...day,
+        isStandard: true,
+        month: date.month,
+        year: date.year,
+      }),
+    );
     const allDays = [...prependingBlankDays, ...standardDays];
     return allDays;
   };
@@ -194,17 +198,21 @@ export const DaysList: FC<IDaysList> = ({
   const renderEachWeekDays = (args: any, index: number) => {
     const { id, value: day, month, year, isStandard } = args;
     const dayItem = { day, month, year };
-    const isInDisabledDaysRange = disabledDays.some(disabledDay => isSameDay(dayItem, disabledDay));
-    const isBeforeMinimumDate = isBeforeDate(dayItem, minimumDate);
-    const isAfterMaximumDate = isBeforeDate(maximumDate, dayItem);
+    /* disabledDays.some */
+    const isInDisabledDaysRange = disabledDays
+      ? disabledDays.some(disabledDay => isSameDay(dayItem, disabledDay))
+      : null;
+    const isBeforeMinimumDate = isBefore(dayItem, minimumDate);
+    const isAfterMaximumDate = isBefore(maximumDate, dayItem);
     const isNotInValidRange = isStandard && (isBeforeMinimumDate || isAfterMaximumDate);
     const isDisabled = isInDisabledDaysRange || isNotInValidRange;
-    const isWeekend = weekDaysList.some(
+    /* GREGORIAN_WEEK_DAYS.some */
+    const isWeekend = GREGORIAN_WEEK_DAYS.some(
       (weekDayItem: any, weekDayItemIndex: any) =>
         weekDayItem.isWeekend && weekDayItemIndex === index,
     );
     const additionalClass = getDayClassNames({ ...dayItem, isWeekend, isStandard, isDisabled });
-    const dayLabel = `${weekDaysList[index].name}, ${day} ${getMonthName(month)} ${year}`;
+    const dayLabel = `${GREGORIAN_WEEK_DAYS[index].name}, ${day} ${getMonthName(month)} ${year}`;
     const isOnActiveSlide = month === activeDate.month;
     const dayStatus = getDayStatus(dayItem);
     const { isSelected, isStartingDayRange, isEndingDayRange, isWithinRange } = dayStatus;
@@ -218,7 +226,7 @@ export const DaysList: FC<IDaysList> = ({
       <div
         tabIndex={shouldEnableKeyboardNavigation ? 0 : -1}
         key={id}
-        className={`Calendar__day -${isRtl ? 'rtl' : 'ltr'} ${additionalClass}`}
+        className={`Calendar__day -ltr ${additionalClass}`}
         onClick={() => {
           handleDayPress({ ...dayItem, isDisabled });
         }}
@@ -233,7 +241,7 @@ export const DaysList: FC<IDaysList> = ({
         role="gridcell"
         data-is-default-selectable={shouldEnableKeyboardNavigation}
       >
-        {!isStandard ? '' : getLanguageDigits(day)}
+        {!isStandard ? '' : day}
       </div>
     );
   };

@@ -23,6 +23,20 @@ export const GREGORIAN_WEEK_DAYS = [
   { name: 'Sabado', short: 'S', isWeekend: true },
 ];
 
+export const getMonthName = (month: number) => GREGORIAN_MONTHS[month - 1];
+
+export const CalendarLabels = {
+  nextMonth: 'Próximo mês',
+  previousMonth: 'Mês anterior',
+  openMonthSelector: 'Abrir seletor de mês',
+  openYearSelector: 'Abrir seletor de ano',
+  closeMonthSelector: 'Fechar seletor de mês',
+  closeYearSelector: 'Fechar seletor de ano',
+  from: 'de',
+  to: 'para',
+  defaultPlaceholder: 'Selecionar...',
+};
+
 export type DAY_SHAPE = { year: number; month: number; day: number };
 export type DAY_SHAPE_FromTo = { day: DAY_SHAPE; from: DAY_SHAPE; to: DAY_SHAPE };
 
@@ -41,7 +55,6 @@ export type LOCALE_SHAPE = {
   weekStartingIndex: number;
   getToday: any;
   toNativeDate: any;
-  getMonthLength: any;
   transformDigit: any;
   nextMonth: string;
   previousMonth: string;
@@ -51,8 +64,11 @@ export type LOCALE_SHAPE = {
   closeYearSelector: string;
   from: string;
   to: string;
-  defaultPlaceholder: string;
-  digitSeparator: string;
-  yearLetterSkip: number;
-  isRtl: boolean;
+};
+
+export const getNativeDate = (date: DAY_SHAPE) => new Date(date.year, date.month - 1, date.day);
+
+export const isBefore = (day1: DAY_SHAPE | null, day2: DAY_SHAPE | null) => {
+  if (!day1 || !day2) return false;
+  return getNativeDate(day1) < getNativeDate(day2);
 };

@@ -1,8 +1,12 @@
 import React, { forwardRef } from 'react';
-
-import { useLocaleUtils, useLocaleLanguage } from './shared/hooks';
 import { putZero, getValueType } from './shared/generalUtils';
-import { TYPE_SINGLE_DATE, TYPE_RANGE, TYPE_MUTLI_DATE, DAY_SHAPE } from './shared/constants';
+import {
+  TYPE_SINGLE_DATE,
+  TYPE_RANGE,
+  TYPE_MUTLI_DATE,
+  DAY_SHAPE,
+  CalendarLabels,
+} from './shared/constants';
 
 type IDatePickerInput = {
   formatInputText: (props?: any) => string;
@@ -22,42 +26,30 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
   const renderInput = props.renderInput || funcNull;
   const inputClassName = props.inputClassName || '';
   const inputPlaceholder = props.inputPlaceholder || '';
-  const { getLanguageDigits } = useLocaleUtils();
-  const {
-    from: fromWord,
-    to: toWord,
-    yearLetterSkip,
-    digitSeparator,
-    defaultPlaceholder,
-    isRtl,
-  } = useLocaleLanguage();
 
   const getSingleDayValue = () => {
     if (!value) return '';
-    const year = getLanguageDigits(value.year);
-    const month = getLanguageDigits(putZero(value.month));
-    const day = getLanguageDigits(putZero(value.day));
+    const year = value.year;
+    const month = putZero(value.month);
+    const day = putZero(value.day);
     return `${year}/${month}/${day}`;
   };
 
   const getDayRangeValue = () => {
+    const yearLetterSkip = 0;
     if (!value.from || !value.to) return '';
     const { from, to } = value;
-    const fromText = `${getLanguageDigits(putZero(from.year))
+    const fromText = `${putZero(from.year)
       .toString()
-      .slice(yearLetterSkip)}/${getLanguageDigits(putZero(from.month))}/${getLanguageDigits(
-      putZero(from.day),
-    )}`;
-    const toText = `${getLanguageDigits(putZero(to.year))
+      .slice(yearLetterSkip)}/${putZero(from.month)}/${putZero(from.day)}`;
+    const toText = `${putZero(to.year)
       .toString()
-      .slice(yearLetterSkip)}/${getLanguageDigits(putZero(to.month))}/${getLanguageDigits(
-      putZero(to.day),
-    )}`;
-    return `${fromWord} ${fromText} ${toWord} ${toText}`;
+      .slice(yearLetterSkip)}/${putZero(to.month)}/${putZero(to.day)}`;
+    return `${CalendarLabels.from} ${fromText} ${CalendarLabels.to} ${toText}`;
   };
 
   const getMultiDateValue = () => {
-    return value.map((date: DAY_SHAPE) => getLanguageDigits(date.day)).join(`${digitSeparator} `);
+    return value.map((date: DAY_SHAPE) => date.day).join(`,`);
   };
 
   const getValue = () => {
@@ -73,7 +65,7 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
     }
   };
 
-  const placeholderValue = inputPlaceholder || defaultPlaceholder;
+  const placeholderValue = inputPlaceholder || CalendarLabels.defaultPlaceholder;
 
   return (
     renderInput({ ref }) || (
@@ -83,7 +75,7 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
         ref={ref}
         value={getValue()}
         placeholder={placeholderValue}
-        className={`DatePicker__input -${isRtl ? 'rtl' : 'ltr'} ${inputClassName}`}
+        className={`DatePicker__input -ltr ${inputClassName}`}
         aria-label={placeholderValue}
       />
     )
