@@ -18,7 +18,6 @@ export interface CalendarProps<TValue extends Value> {
   onDisabledDayError?(value: Day): void;
   selectorStartingYear?: number;
   selectorEndingYear?: number;
-  locale?: string;
   minimumDate?: Day;
   maximumDate?: Day;
   disabledDays?: Day[];
@@ -62,7 +61,7 @@ type WeekDay = {
   name: string;
   short: string;
   isWeekend?: boolean;
-}
+};
 
 export type Utils = {
   monthsList: string[];
@@ -86,7 +85,7 @@ export interface Locale {
   getToday: () => Day;
   toNativeDate: () => Date;
   getMonthLength: () => number;
-  transformDigit: () => (number | string);
+  transformDigit: () => number | string;
   nextMonth: string;
   previousMonth: string;
   openMonthSelector: string;

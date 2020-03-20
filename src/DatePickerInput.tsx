@@ -7,7 +7,6 @@ type IDatePickerInput = {
   inputPlaceholder: string;
   inputClassName: string;
   renderInput: (props?: any) => null;
-  locale: string;
   value: any;
 };
 

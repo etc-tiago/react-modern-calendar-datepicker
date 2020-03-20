@@ -35,7 +35,6 @@ type IDaysList = {
   onSlideChange: any;
   minimumDate: IDateNumbers | null;
   maximumDate: IDateNumbers | null;
-  locale: string;
   customDaysClassName: any;
 };
 export const DaysList: FC<IDaysList> = ({
@@ -48,7 +47,6 @@ export const DaysList: FC<IDaysList> = ({
   minimumDate,
   maximumDate,
   onChange,
-  locale,
   calendarTodayClassName,
   calendarSelectedDayClassName,
   calendarRangeStartClassName,

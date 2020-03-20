@@ -7,7 +7,6 @@ const renderNull = () => null;
 
 type IDatePicker = {
   wrapperClassName: string;
-  locale: string;
 
   value: any;
   onChange: any;
@@ -59,7 +58,6 @@ export const DatePicker: FC<IDatePicker> = ({
   maximumDate,
   selectorStartingYear,
   selectorEndingYear,
-  locale,
   shouldHighlightWeekends,
   renderFooter,
   customDaysClassName,
@@ -176,7 +174,6 @@ export const DatePicker: FC<IDatePicker> = ({
         inputPlaceholder={inputPlaceholder}
         inputClassName={inputClassName}
         renderInput={renderInput}
-        locale={locale}
       />
       {isCalendarOpen && (
         <>
@@ -207,7 +204,6 @@ export const DatePicker: FC<IDatePicker> = ({
               maximumDate={maximumDate}
               selectorStartingYear={selectorStartingYear}
               selectorEndingYear={selectorEndingYear}
-              locale={locale}
               shouldHighlightWeekends={shouldHighlightWeekends}
               renderFooter={renderFooter}
               customDaysClassName={customDaysClassName}

@@ -13,8 +13,7 @@
     "clean": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "size": "npm run build && size-limit",
-    "checkAll": "npm run size && npm run lint && npm run test",
-    "contributors:generate": "npm all-contributors generate"
+    "checkAll": "npm run size && npm run lint && npm run test"
   },
   "files": [
     "dist",

@@ -11,7 +11,6 @@ type YearSelector = {
   onYearSelect: any;
   maximumDate: IDateNumbers | null;
   minimumDate: IDateNumbers | null;
-  locale: any;
 };
 
 export const YearSelector: FC<YearSelector> = ({
@@ -22,7 +21,6 @@ export const YearSelector: FC<YearSelector> = ({
   selectorEndingYear,
   maximumDate,
   minimumDate,
-  locale,
 }) => {
   const wrapperElement: any = useRef(null);
   const yearListElement: any = useRef(null);

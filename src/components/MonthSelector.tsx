@@ -5,7 +5,7 @@ import handleKeyboardNavigation from '../shared/keyboardNavigation';
 import { monthsNames, isBefore, getMonthNumber } from '../shared/constants';
 
 export const MonthSelector = (props: any) => {
-  const { activeDate, maximumDate, minimumDate, onMonthSelect, isOpen, locale } = props;
+  const { activeDate, maximumDate, minimumDate, onMonthSelect, isOpen } = props;
   const monthSelector: any = useRef(null);
 
   useEffect(() => {

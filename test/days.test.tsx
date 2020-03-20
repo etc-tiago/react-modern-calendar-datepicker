@@ -429,7 +429,6 @@ describe('Calendar Days', () => {
           activeDate={activeDate}
           monthChangeDirection="NEXT"
           onMonthChange={mockedMonthChange}
-          locale="en"
         />,
       );
 

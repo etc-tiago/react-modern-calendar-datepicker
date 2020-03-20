@@ -189,13 +189,4 @@ describe('DatePicker Visibility', () => {
     fireEvent.keyUp(container.firstChild, { key: 'Tab' });
     expect(container.firstChild).not.toHaveClass('-noFocusOutline');
   });
-
-  test('renders the datepicker with custom locale prop', () => {
-    // ltr language
-    expect(
-      render(<DatePicker value={null} onChange={() => {}} locale="en" />).container,
-    ).toStrictEqual(
-      render(<DatePicker value={null} onChange={() => {}} locale={'en'} />).container,
-    );
-  });
 });

@@ -14,7 +14,6 @@ type ICalendar = {
   slideAnimationDuration: string;
   minimumDate: IDateNumbers | null;
   maximumDate: IDateNumbers | null;
-  locale: string;
   renderFooter: any;
   customDaysClassName: IDateNumbers & { className: string }[];
   //
@@ -49,7 +48,6 @@ export const Calendar: FC<ICalendar> = ({
   maximumDate,
   selectorStartingYear,
   selectorEndingYear,
-  locale,
   shouldHighlightWeekends,
   renderFooter,
   customDaysClassName,
@@ -60,7 +58,6 @@ export const Calendar: FC<ICalendar> = ({
   colorPrimaryLight = colorPrimaryLight || '#cff4d5';
   slideAnimationDuration = slideAnimationDuration || '0.4s';
   calendarClassName = calendarClassName || '';
-  locale = locale || 'en';
   value = value || null;
   customDaysClassName = customDaysClassName || [];
   renderFooter = renderFooter || renderNull;
@@ -165,7 +162,6 @@ export const Calendar: FC<ICalendar> = ({
         monthChangeDirection={mainState.monthChangeDirection}
         isMonthSelectorOpen={mainState.isMonthSelectorOpen}
         isYearSelectorOpen={mainState.isYearSelectorOpen}
-        locale={locale}
       />
 
       <MonthSelector
@@ -174,7 +170,6 @@ export const Calendar: FC<ICalendar> = ({
         onMonthSelect={selectMonth}
         maximumDate={maximumDate}
         minimumDate={minimumDate}
-        locale={locale}
       />
 
       <YearSelector
@@ -185,7 +180,6 @@ export const Calendar: FC<ICalendar> = ({
         selectorEndingYear={selectorEndingYear}
         maximumDate={maximumDate}
         minimumDate={minimumDate}
-        locale={locale}
       />
 
       <div className="Calendar__weekDays">{weekdays}</div>
@@ -205,7 +199,6 @@ export const Calendar: FC<ICalendar> = ({
         calendarRangeStartClassName={calendarRangeStartClassName}
         calendarRangeEndClassName={calendarRangeEndClassName}
         calendarRangeBetweenClassName={calendarRangeBetweenClassName}
-        locale={locale}
         shouldHighlightWeekends={shouldHighlightWeekends}
         customDaysClassName={customDaysClassName}
         isQuickSelectorOpen={mainState.isYearSelectorOpen || mainState.isMonthSelectorOpen}

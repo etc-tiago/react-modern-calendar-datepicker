@@ -14,7 +14,6 @@ type IHeader = {
   onYearSelect: any;
   isMonthSelectorOpen: any;
   isYearSelectorOpen: any;
-  locale: any;
 };
 
 export const Header: FC<IHeader> = ({
@@ -27,7 +26,6 @@ export const Header: FC<IHeader> = ({
   onYearSelect,
   isMonthSelectorOpen,
   isYearSelectorOpen,
-  locale,
 }) => {
   const headerElement: any = useRef(null);
   const monthYearWrapperElement: any = useRef(null);
