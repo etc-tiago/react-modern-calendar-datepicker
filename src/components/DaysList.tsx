@@ -200,7 +200,8 @@ export const DaysList: FC<IDaysList> = ({
     const isNotInValidRange = isStandard && (isBeforeMinimumDate || isAfterMaximumDate);
     const isDisabled = isInDisabledDaysRange || isNotInValidRange;
     const isWeekend = weekDaysList.some(
-      (weekDayItem, weekDayItemIndex) => weekDayItem.isWeekend && weekDayItemIndex === index,
+      (weekDayItem: any, weekDayItemIndex: any) =>
+        weekDayItem.isWeekend && weekDayItemIndex === index,
     );
     const additionalClass = getDayClassNames({ ...dayItem, isWeekend, isStandard, isDisabled });
     const dayLabel = `${weekDaysList[index].name}, ${day} ${getMonthName(month)} ${year}`;
