@@ -1,13 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { useLocaleUtils, useLocaleLanguage } from './shared/hooks';
 import { putZero, getValueType } from './shared/generalUtils';
 import { TYPE_SINGLE_DATE, TYPE_RANGE, TYPE_MUTLI_DATE, DAY_SHAPE } from './shared/constants';
 
-const DatePickerInput = React.forwardRef((props: any, ref: any) => {
-  const { value, inputPlaceholder, inputClassName, formatInputText, renderInput, locale } = props;
-  const { getLanguageDigits } = useLocaleUtils(locale);
+type IDatePickerInput = {
+  formatInputText: (props?: any) => string;
+  inputPlaceholder: string;
+  inputClassName: string;
+  renderInput: (props?: any) => null;
+  locale: string;
+  value: any;
+};
+
+const DatePickerInput = React.forwardRef((props: IDatePickerInput, ref: any) => {
+  const { value } = props;
+  const formatInputText = props.formatInputText;
+  const renderInput = props.renderInput;
+  const inputClassName = props.inputClassName || '';
+  const inputPlaceholder = props.inputPlaceholder || '';
+  const { getLanguageDigits } = useLocaleUtils();
   const {
     from: fromWord,
     to: toWord,
@@ -15,7 +27,7 @@ const DatePickerInput = React.forwardRef((props: any, ref: any) => {
     digitSeparator,
     defaultPlaceholder,
     isRtl,
-  } = useLocaleLanguage(locale);
+  } = useLocaleLanguage();
 
   const getSingleDayValue = () => {
     if (!value) return '';
@@ -77,19 +89,5 @@ const DatePickerInput = React.forwardRef((props: any, ref: any) => {
 
   return render();
 });
-
-DatePickerInput.defaultProps = {
-  formatInputText: () => '',
-  renderInput: () => null,
-  inputPlaceholder: '',
-  inputClassName: '',
-};
-
-DatePickerInput.propTypes = {
-  formatInputText: PropTypes.func,
-  inputPlaceholder: PropTypes.string,
-  inputClassName: PropTypes.string,
-  renderInput: PropTypes.func,
-};
 
 export default DatePickerInput;
