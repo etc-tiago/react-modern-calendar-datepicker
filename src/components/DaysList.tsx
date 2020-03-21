@@ -16,7 +16,6 @@ import {
   getMonthFirstWeekday,
   checkDayInDayRange,
 } from '../shared/constants';
-import handleKeyboardNavigation from '../shared/keyboardNavigation';
 
 type IDaysList = {
   onChange: any;
@@ -185,12 +184,6 @@ export const DaysList: FC<IDaysList> = ({
     } else handleDayClick(dayItem);
   };
 
-  const isDayReachableByKeyboard = (args: any) => {
-    const { isOnActiveSlide, isStandard, isSelected, isStartingDayRange, isToday, day } = args;
-    if (isQuickSelectorOpen || !isOnActiveSlide || !isStandard) return false;
-    if (isSelected || isStartingDayRange || isToday || day === 1) return true;
-  };
-
   const renderEachWeekDays = (args: any, index: number) => {
     const { id, value: day, month, year, isStandard } = args;
     const dayItem = { day, month, year };
@@ -212,15 +205,8 @@ export const DaysList: FC<IDaysList> = ({
     const isOnActiveSlide = month === activeDate.month;
     const dayStatus = getDayStatus(dayItem);
     const { isSelected, isStartingDayRange, isEndingDayRange, isWithinRange } = dayStatus;
-    const shouldEnableKeyboardNavigation = isDayReachableByKeyboard({
-      ...dayItem,
-      ...dayStatus,
-      isOnActiveSlide,
-      isStandard,
-    });
     return (
       <div
-        tabIndex={shouldEnableKeyboardNavigation ? 0 : -1}
         key={id}
         className={`Calendar__day -ltr ${additionalClass}`}
         onClick={() => {
@@ -235,7 +221,6 @@ export const DaysList: FC<IDaysList> = ({
         aria-selected={isSelected || isStartingDayRange || isEndingDayRange || isWithinRange}
         {...(!isStandard || !isOnActiveSlide || isQuickSelectorOpen ? { 'aria-hidden': true } : {})}
         role="gridcell"
-        data-is-default-selectable={shouldEnableKeyboardNavigation}
       >
         {!isStandard ? '' : day}
       </div>
@@ -263,17 +248,12 @@ export const DaysList: FC<IDaysList> = ({
     return Array.from(Array(6).keys()).map(renderSingleWeekRow);
   };
 
-  const handleKeyDown = (e: any) => {
-    handleKeyboardNavigation(e, { allowVerticalArrows: true });
-  };
-
   return (
     <div
       ref={calendarSectionWrapper}
       className="Calendar__sectionWrapper"
       role="presentation"
       data-testid="days-section-wrapper"
-      onKeyDown={handleKeyDown}
     >
       <div
         onAnimationEnd={e => {

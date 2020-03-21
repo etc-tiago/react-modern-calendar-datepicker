@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, FC } from 'react';
 
 import { minYearToSubtract, maxYearToSum, IDateNumbers, getToday } from '../shared/constants';
-import handleKeyboardNavigation from '../shared/keyboardNavigation';
 
 type YearSelector = {
   selectorStartingYear: number;
@@ -72,10 +71,6 @@ export const YearSelector: FC<YearSelector> = ({
     });
   };
 
-  const handleKeyDown = (e: any) => {
-    handleKeyboardNavigation(e, { allowVerticalArrows: false });
-  };
-
   return (
     <div
       className="Calendar__yearSelectorAnimationWrapper"
@@ -87,7 +82,6 @@ export const YearSelector: FC<YearSelector> = ({
         className="Calendar__yearSelectorWrapper"
         role="presentation"
         data-testid="year-selector-wrapper"
-        onKeyDown={handleKeyDown}
       >
         <ul ref={yearListElement} className="Calendar__yearSelector" data-testid="year-selector">
           {renderSelectorYears()}

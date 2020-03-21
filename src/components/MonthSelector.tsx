@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
 import { isSameDay } from '../shared/generalUtils';
-import handleKeyboardNavigation from '../shared/keyboardNavigation';
 import { monthsNames, isBefore, getMonthNumber } from '../shared/constants';
 
 export const MonthSelector = (props: any) => {
@@ -12,10 +11,6 @@ export const MonthSelector = (props: any) => {
     const classToggleMethod = isOpen ? 'add' : 'remove';
     monthSelector.current.classList[classToggleMethod]('-open');
   }, [isOpen]);
-
-  const handleKeyDown = (e: any) => {
-    handleKeyboardNavigation(e, { allowVerticalArrows: false });
-  };
 
   const renderMonthSelectorItems = () =>
     monthsNames.map((persianMonth: any) => {
@@ -59,7 +54,6 @@ export const MonthSelector = (props: any) => {
         role="presentation"
         data-testid="month-selector-wrapper"
         className="Calendar__monthSelectorWrapper"
-        onKeyDown={handleKeyDown}
       >
         <ul ref={monthSelector} className="Calendar__monthSelector" data-testid="month-selector">
           {renderMonthSelectorItems()}
