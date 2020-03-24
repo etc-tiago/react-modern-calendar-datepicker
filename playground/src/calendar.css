@@ -90,9 +90,9 @@
       .Calendar .header .month-arrow-wrapper:disabled, .Calendar .header .month-arrow-wrapper.hidden {
         opacity: 0;
         pointer-events: none; }
-      .Calendar .header .month-arrow-wrapper-left {
+      .Calendar .header .month-arrow-wrapper.left {
         transform: rotate(90deg); }
-      .Calendar .header .month-arrow-wrapper-right {
+      .Calendar .header .month-arrow-wrapper.right {
         transform: rotate(-90deg); }
       .Calendar .header .month-arrow-wrapper:active .month-arrow {
         transform: scale(0.7); }

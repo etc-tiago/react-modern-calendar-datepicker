@@ -120,11 +120,11 @@ $colorError: #666;
         pointer-events: none;
       }
 
-      &-left {
+      &.left {
         transform: rotate(90deg);
       }
 
-      &-right {
+      &.right {
         transform: rotate(-90deg);
       }
 
