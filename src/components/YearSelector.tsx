@@ -32,13 +32,13 @@ export const YearSelector: FC<YearSelector> = ({
   }
   useEffect(() => {
     const classToggleMethod = isOpen ? 'add' : 'remove';
-    const activeSelectorYear = wrapperElement.current.querySelector('.year-selector-item.-active');
+    const activeSelectorYear = wrapperElement.current.querySelector('.year-selector-item.active');
     if (!activeSelectorYear) {
       throw new RangeError('O valor fornecido para o ano está fora do intervalo de anos selecionável.');
     }
-    wrapperElement.current.classList[classToggleMethod]('-faded');
+    wrapperElement.current.classList[classToggleMethod]('faded');
     yearListElement.current.scrollTop = activeSelectorYear.offsetTop - activeSelectorYear.offsetHeight * 5;
-    yearListElement.current.classList[classToggleMethod]('-open');
+    yearListElement.current.classList[classToggleMethod]('open');
   }, [isOpen]);
 
   const renderSelectorYears = () => {
@@ -47,7 +47,7 @@ export const YearSelector: FC<YearSelector> = ({
       const isBeforeMinimumDate = minimumDate && item < minimumDate.year;
       const isSelected = activeDate.year === item;
       return (
-        <li key={item} className={`year-selector-item ${isSelected ? '-active' : ''}`}>
+        <li key={item} className={`year-selector-item ${isSelected ? 'active' : ''}`}>
           <button
             tabIndex={isSelected && isOpen ? 0 : -1}
             className="year-selector-text"
@@ -68,8 +68,8 @@ export const YearSelector: FC<YearSelector> = ({
 
   return (
     <div className="year-selector-animation-wrapper" role="presentation" {...(isOpen ? {} : { 'aria-hidden': true })}>
-      <div ref={wrapperElement} className="year-selector-wrapper" role="presentation" data-testid="year-selector-wrapper">
-        <ul ref={yearListElement} className="year-selector" data-testid="year-selector">
+      <div ref={wrapperElement} className="year-selector-wrapper" role="presentation">
+        <ul ref={yearListElement} className="year-selector">
           {renderSelectorYears()}
         </ul>
       </div>

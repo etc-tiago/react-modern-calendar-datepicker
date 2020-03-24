@@ -9,7 +9,7 @@ export const MonthSelector = (props: any) => {
 
   useEffect(() => {
     const classToggleMethod = isOpen ? 'add' : 'remove';
-    monthSelector.current.classList[classToggleMethod]('-open');
+    monthSelector.current.classList[classToggleMethod]('open');
   }, [isOpen]);
 
   const renderMonthSelectorItems = () =>
@@ -22,7 +22,7 @@ export const MonthSelector = (props: any) => {
         (isBefore({ ...monthDate, month: monthNumber + 1 }, minimumDate) || isSameDay({ ...monthDate, month: monthNumber + 1 }, minimumDate));
       const isSelected = monthNumber === activeDate.month;
       return (
-        <li key={persianMonth} className={`month-selector-item ${isSelected ? '-active' : ''}`}>
+        <li key={persianMonth} className={`month-selector-item ${isSelected ? 'active' : ''}`}>
           <button
             tabIndex={isSelected && isOpen ? 0 : -1}
             onClick={() => {
@@ -41,8 +41,8 @@ export const MonthSelector = (props: any) => {
     });
   return (
     <div role="presentation" className="month-selector-animation-wrapper" {...(isOpen ? {} : { 'aria-hidden': true })}>
-      <div role="presentation" data-testid="month-selector-wrapper" className="month-selector-wrapper">
-        <ul ref={monthSelector} className="month-selector" data-testid="month-selector">
+      <div role="presentation" className="month-selector-wrapper">
+        <ul ref={monthSelector} className="month-selector">
           {renderMonthSelectorItems()}
         </ul>
       </div>

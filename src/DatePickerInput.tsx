@@ -70,7 +70,6 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
   return (
     renderInput({ ref }) || (
       <input
-        data-testid="datepicker-input"
         readOnly
         ref={ref}
         value={getValue()}

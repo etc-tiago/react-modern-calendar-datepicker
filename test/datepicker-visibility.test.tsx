@@ -180,8 +180,8 @@ describe('DatePicker Visibility', () => {
   test('adds focus style on keyboard navigation', () => {
     const { container } = render(<Calendar value={null} />);
 
-    expect(container.firstChild).toHaveClass('noFocusOutline');
+    expect(container.firstChild).toHaveClass('no-focus-outline');
     fireEvent.keyUp(container.firstChild, { key: 'Tab' });
-    expect(container.firstChild).not.toHaveClass('noFocusOutline');
+    expect(container.firstChild).not.toHaveClass('no-focus-outline');
   });
 });

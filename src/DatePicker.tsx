@@ -128,7 +128,7 @@ export const DatePicker: FC<IDatePicker> = ({
 
     calendarContainerElement.current.style.left = getLeftStyle();
     if (isOverflowingFromBottom) {
-      calendarContainerElement.current.classList.add('-top');
+      calendarContainerElement.current.classList.add('top');
     }
   }, [isCalendarOpen]);
 
@@ -177,7 +177,6 @@ export const DatePicker: FC<IDatePicker> = ({
           <div
             ref={calendarContainerElement}
             className="datepicker-calendar-container"
-            data-testid="calendar-container"
             role="presentation"
             onMouseDown={() => {
               shouldPreventToggle.current = true;

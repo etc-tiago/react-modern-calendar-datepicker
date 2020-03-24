@@ -44,7 +44,7 @@ export const Header: FC<IHeader> = ({
     const isOpen = isMonthSelectorOpen || isYearSelectorOpen;
     const monthText = headerElement.current.querySelector('.month-year.shown .month-text');
     const yearText = monthText.nextSibling;
-    const hasActiveBackground = (element: any) => element.classList.contains('-activeBackground');
+    const hasActiveBackground = (element: any) => element.classList.contains('activeBackground');
     const isInitialRender = !isOpen && !hasActiveBackground(monthText) && !hasActiveBackground(yearText);
     if (isInitialRender) {
       return;
@@ -66,11 +66,11 @@ export const Header: FC<IHeader> = ({
     secondaryElement.setAttribute('tabindex', isOpen ? '-1' : '0');
     secondaryElement.style.transform = '';
     primaryElement.style.transform = `scale(${scale}) ${translateX ? `translateX(${translateX}px)` : ''}`;
-    primaryElement.classList.toggle('-activeBackground');
-    secondaryElement.classList.toggle('-hidden');
+    primaryElement.classList.toggle('activeBackground');
+    secondaryElement.classList.toggle('hidden');
     arrows.forEach(arrow => {
-      const isHidden = arrow.classList.contains('-hidden');
-      arrow.classList.toggle('-hidden');
+      const isHidden = arrow.classList.contains('hidden');
+      arrow.classList.toggle('hidden');
       if (isHidden) {
         arrow.removeAttribute('aria-hidden');
         arrow.setAttribute('tabindex', '0');
@@ -97,7 +97,7 @@ export const Header: FC<IHeader> = ({
   const isPreviousMonthArrowDisabled =
     minimumDate && (isBefore({ ...activeDate, day: 1 }, minimumDate) || isSameDay(minimumDate, { ...activeDate, day: 1 }));
 
-  const onMonthChangeTrigger = (direction: any) => {
+  const onMonthChangeTrigger = (direction: 'previous' | 'next') => () => {
     /* Array.from(monthYearWrapperElement.current.children).some */
     const isMonthChanging = Array.from(monthYearWrapperElement.current.children).some((child: any) => child.classList.contains('shown-animated'));
     if (isMonthChanging) {
@@ -148,25 +148,21 @@ export const Header: FC<IHeader> = ({
   return (
     <div ref={headerElement} className="header">
       <button
-        className="month-arrow-wrapper -right"
-        onClick={() => {
-          onMonthChangeTrigger('PREVIOUS');
-        }}
+        className="month-arrow-wrapper right"
+        onClick={onMonthChangeTrigger('previous')}
         aria-label={CalendarLabels.previousMonth}
         type="button"
         disabled={isPreviousMonthArrowDisabled || false}
       >
         <span className="month-arrow" />
       </button>
-      <div className="month-year-container" ref={monthYearWrapperElement} data-testid="month-year-container">
+      <div className="month-year-container" ref={monthYearWrapperElement}>
         &nbsp;
         {monthYearButtons}
       </div>
       <button
-        className="month-arrow-wrapper -left"
-        onClick={() => {
-          onMonthChangeTrigger('NEXT');
-        }}
+        className="month-arrow-wrapper left"
+        onClick={onMonthChangeTrigger('next')}
         aria-label={CalendarLabels.nextMonth}
         type="button"
         disabled={isNextMonthArrowDisabled || false}

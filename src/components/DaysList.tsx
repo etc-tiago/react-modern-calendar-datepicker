@@ -133,15 +133,15 @@ export const DaysList: FC<IDaysList> = ({
     const { isToday, isSelected, isStartingDayRange, isEndingDayRange, isWithinRange } = getDayStatus(dayItem);
     const customDayItemClassName = customDaysClassName.find((day: any) => isSameDay(dayItem, day));
     const classNames = ''
-      .concat(isToday && !isSelected ? ` -today` : '')
-      .concat(!dayItem.isStandard ? ' -blank' : '')
-      .concat(dayItem.isWeekend && shouldHighlightWeekends ? ' -weekend' : '')
+      .concat(isToday && !isSelected ? ` today` : '')
+      .concat(!dayItem.isStandard ? ' blank' : '')
+      .concat(dayItem.isWeekend && shouldHighlightWeekends ? ' weekend' : '')
       .concat(customDayItemClassName ? ` ${customDayItemClassName.className}` : '')
-      .concat(isSelected ? ` -selected ${calendarSelectedDayClassName}` : '')
-      .concat(isStartingDayRange ? ` -selectedStart ${calendarRangeStartClassName}` : '')
-      .concat(isEndingDayRange ? ` -selectedEnd ${calendarRangeEndClassName}` : '')
-      .concat(isWithinRange ? ` -selectedBetween ${calendarRangeBetweenClassName}` : '')
-      .concat(dayItem.isDisabled ? ' -disabled' : '');
+      .concat(isSelected ? ` selected ${calendarSelectedDayClassName}` : '')
+      .concat(isStartingDayRange ? ` selectedStart ${calendarRangeStartClassName}` : '')
+      .concat(isEndingDayRange ? ` selectedEnd ${calendarRangeEndClassName}` : '')
+      .concat(isWithinRange ? ` selectedBetween ${calendarRangeBetweenClassName}` : '')
+      .concat(dayItem.isDisabled ? ' disabled' : '');
     return classNames;
   };
 
@@ -170,13 +170,11 @@ export const DaysList: FC<IDaysList> = ({
   const renderEachWeekDays = (args: any, index: number) => {
     const { id, value: day, month, year, isStandard } = args;
     const dayItem = { day, month, year };
-    /* disabledDays.some */
     const isInDisabledDaysRange = disabledDays ? disabledDays.some(disabledDay => isSameDay(dayItem, disabledDay)) : null;
     const isBeforeMinimumDate = isBefore(dayItem, minimumDate);
     const isAfterMaximumDate = isBefore(maximumDate, dayItem);
     const isNotInValidRange = isStandard && (isBeforeMinimumDate || isAfterMaximumDate);
     const isDisabled = isInDisabledDaysRange || isNotInValidRange;
-    /* GREGORIAN_WEEK_DAYS.some */
     const isWeekend = weekDaysData.some((weekDayItem: any, weekDayItemIndex: any) => weekDayItem.isWeekend && weekDayItemIndex === index);
     const additionalClass = getDayClassNames({ ...dayItem, isWeekend, isStandard, isDisabled });
     const dayLabel = `${weekDaysData[index].name}, ${day} ${getMonthName(month)} ${year}`;
@@ -189,12 +187,6 @@ export const DaysList: FC<IDaysList> = ({
         className={`day ${additionalClass}`}
         onClick={() => {
           handleDayPress({ ...dayItem, isDisabled });
-        }}
-        onKeyDown={({ key }) => {
-          /* istanbul ignore else */
-          if (key === 'Enter') {
-            handleDayPress({ ...dayItem, isDisabled });
-          }
         }}
         aria-disabled={isDisabled}
         aria-label={dayLabel}
@@ -226,26 +218,17 @@ export const DaysList: FC<IDaysList> = ({
     return Array.from(Array(6).keys()).map(renderSingleWeekRow);
   };
 
+  const onAnimationEnd = (e: any) => {
+    handleSlideAnimationEnd(e);
+    onSlideChange();
+  };
+
   return (
-    <div ref={calendarSectionWrapper} className="section-wrapper" role="presentation" data-testid="days-section-wrapper">
-      <div
-        onAnimationEnd={e => {
-          handleSlideAnimationEnd(e);
-          onSlideChange();
-        }}
-        className="section shown"
-        role="rowgroup"
-      >
+    <div ref={calendarSectionWrapper} className="section-wrapper" role="presentation">
+      <div onAnimationEnd={onAnimationEnd} className="section shown" role="rowgroup">
         {renderMonthDays(true)}
       </div>
-      <div
-        onAnimationEnd={e => {
-          handleSlideAnimationEnd(e);
-          onSlideChange();
-        }}
-        className="section hidden-next"
-        role="rowgroup"
-      >
+      <div onAnimationEnd={onAnimationEnd} className="section hidden-next" role="rowgroup">
         {renderMonthDays(false)}
       </div>
     </div>

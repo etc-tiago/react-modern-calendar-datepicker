@@ -46,7 +46,7 @@ $colorError: #666;
   }
 }
 
-.datepicker-calendar-container.-top+.picker-calendar-arrow {
+.datepicker-calendar-container.top+.picker-calendar-arrow {
   top: auto;
   bottom: calc(100% + 10px);
   transform: rotate(180deg);
@@ -57,7 +57,8 @@ $colorError: #666;
   top: calc(100% + 20px);
   left: 50%;
   transform: translateX(-50%);
-  &.-top {
+
+  &.top {
     top: auto;
     bottom: calc(100% + 20px);
   }
@@ -86,7 +87,7 @@ $colorError: #666;
   max-width: 90vw;
   min-height: 36.7em;
 
-  &.noFocusOutline *:focus {
+  &.no-focus-outline *:focus {
     outline: none !important;
   }
 
@@ -114,16 +115,16 @@ $colorError: #666;
       }
 
       &:disabled,
-      &.-hidden {
+      &.hidden {
         opacity: 0;
         pointer-events: none;
       }
 
-      &.-left {
+      &-left {
         transform: rotate(90deg);
       }
 
-      &.-right {
+      &-right {
         transform: rotate(-90deg);
       }
 
@@ -206,7 +207,7 @@ $colorError: #666;
       }
 
       &:not(.shown)>*,
-      &>*.-hidden {
+      &>*.hidden {
         cursor: default;
         pointer-events: none;
       }
@@ -220,7 +221,7 @@ $colorError: #666;
           transform: translateX(0.2em) scale(0.95);
         }
 
-        &.-hidden {
+        &.hidden {
           transform: translateX(50%);
           opacity: 0;
         }
@@ -233,7 +234,7 @@ $colorError: #666;
           transform: translateX(-0.2em) scale(0.95);
         }
 
-        &.-hidden {
+        &.hidden {
           transform: translateX(-50%);
           opacity: 0;
         }
@@ -244,13 +245,13 @@ $colorError: #666;
       }
 
       &.shown>*:hover,
-      &>*.-activeBackground {
+      &>*.activeBackground {
         background: #f5f5f5;
       }
     }
   }
 
-  &:not(.noFocusOutline) .month-year.shown>*:focus {
+  &:not(.no-focus-outline) .month-year.shown>*:focus {
     background: #f5f5f5;
   }
 
@@ -326,11 +327,11 @@ $colorError: #666;
       }
     }
 
-    &:not(.-active) .month-selector-item-text:not(:disabled):hover {
+    &:not(.active) .month-selector-item-text:not(:disabled):hover {
       background: #f5f5f5;
     }
 
-    &.-active .month-selector-item-text {
+    &.active .month-selector-item-text {
       background-color: #03aed2;
       color: #fff;
     }
@@ -364,7 +365,7 @@ $colorError: #666;
     bottom: 0;
   }
 
-  &.-faded {
+  &.faded {
 
     &::after,
     &::before {
@@ -395,11 +396,11 @@ $colorError: #666;
         margin-top: 1.5em;
       }
 
-      &:not(.-active) .year-selector-text:not(:disabled):hover {
+      &:not(.active) .year-selector-text:not(:disabled):hover {
         background: #f5f5f5;
       }
 
-      &.-active .year-selector-text {
+      &.active .year-selector-text {
         background-color: #03aed2;
         color: #fff;
       }
@@ -420,8 +421,8 @@ $colorError: #666;
   border-radius: 8.5px;
 }
 
-.month-selector.-open,
-.year-selector.-open {
+.month-selector.open,
+.year-selector.open {
   transform: translateY(0);
 }
 
@@ -523,63 +524,66 @@ $colorError: #666;
           outline-offset: 2px;
         }
 
-        &:not(.-blank):not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween):not(.-selected):hover {
+        &:not(.blank):not(.selectedStart):not(.selectedEnd):not(.selectedBetween):not(.selected):hover {
           background: #eaeaea;
           border-radius: 50%;
           color: $colorBlack;
           border-color: transparent;
         }
 
-        &.-selected,
-        &.-selectedStart,
-        &.-selectedEnd {
+        &.selected,
+        &.selectedStart,
+        &.selectedEnd {
           background: #03aed2;
           color: #fff;
         }
 
-        &.-selected {
+        &.selected {
           border-radius: 50%;
         }
 
-        &.-selectedStart {
+        &.selectedStart {
           border-radius: 0;
           border-top-left-radius: 100em;
           border-bottom-left-radius: 100em;
         }
 
-        &.-selectedBetween {
+        &.selectedBetween {
           background: #cff4d5;
           color: #03aed2;
           border-radius: 0;
         }
 
-        &.-selectedEnd {
+        &.selectedEnd {
           border-top-right-radius: 100em;
           border-bottom-right-radius: 100em;
         }
 
-        &.-weekend:not(.-selected):not(.-blank):not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween) {
-          color: $colorError;
+
+        &.weekend {
+          &:not(.selected):not(.blank):not(.selectedStart):not(.selectedEnd):not(.selectedBetween) {
+            color: $colorError;
+          }
+
+          &.today:not(.selectedStart):not(.selectedEnd):not(.selectedBetween)::after {
+            background: $colorError;
+          }
         }
 
-        &.-weekend.-today:not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween)::after {
-          background: $colorError;
-        }
-
-        &.-disabled {
+        &.disabled {
           color: $colorDisabled !important;
           background: transparent !important;
           cursor: default !important;
         }
 
-        &.-today:not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween) {
+        &.today:not(.selectedStart):not(.selectedEnd):not(.selectedBetween) {
           font-weight: 600;
           color: $colorBlack;
           color: #000;
           position: relative;
         }
 
-        &.-today:not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween)::after {
+        &.today:not(.selectedStart):not(.selectedEnd):not(.selectedBetween)::after {
           content: '';
           position: absolute;
           bottom: 0.2em;
@@ -593,11 +597,11 @@ $colorError: #666;
           transition: 0.2s;
         }
 
-        &.-today:hover:not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween)::after {
+        &.today:hover:not(.selectedStart):not(.selectedEnd):not(.selectedBetween)::after {
           opacity: 0;
         }
 
-        &.-blank {
+        &.blank {
           color: transparent;
           cursor: default;
           pointer-events: none;

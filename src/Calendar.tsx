@@ -57,7 +57,7 @@ export const Calendar: FC<ICalendar> = ({
       const { key } = args;
       /* istanbul ignore else */
       if (key === 'Tab') {
-        calendarElement.current.classList.remove('noFocusOutline');
+        calendarElement.current.classList.remove('no-focus-outline');
       }
     };
     calendarElement.current.addEventListener('keyup', handleKeyUp, false);
@@ -129,7 +129,7 @@ export const Calendar: FC<ICalendar> = ({
   };
 
   return (
-    <div className="Calendar noFocusOutline" role="grid" ref={calendarElement}>
+    <div className="Calendar no-focus-outline" role="grid" ref={calendarElement}>
       <Header
         maximumDate={maximumDate || null}
         minimumDate={minimumDate || null}

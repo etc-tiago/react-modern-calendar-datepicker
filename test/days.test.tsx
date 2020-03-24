@@ -16,7 +16,7 @@ const renderCalendar = props => {
   const sectionWrapper = selectors.getByTestId('days-section-wrapper');
   const activeSection = Array.from(sectionWrapper.children).find(child => child.classList.contains('shown'));
   const days = flatDays(activeSection);
-  const standardDays = days.filter(day => !day.classList.contains('-blank'));
+  const standardDays = days.filter(day => !day.classList.contains('blank'));
   const getDay = day => getByText(activeSection, String(day));
 
   const sections = Array.from(selectors.getByTestId('days-section-wrapper').children);
@@ -48,7 +48,7 @@ describe('Calendar Days', () => {
     test('displays the correct weekday for the first day of the month', () => {
       const { days } = renderCalendar();
       const weekday = getMonthFirstWeekday(getToday());
-      const startingBlankDays = days.slice(0, 7).filter(day => day.classList.contains('-blank'));
+      const startingBlankDays = days.slice(0, 7).filter(day => day.classList.contains('blank'));
 
       expect(startingBlankDays).toHaveLength(weekday);
     });
@@ -102,7 +102,7 @@ describe('Calendar Days', () => {
       const gregorianValueMonthWeekendDays = [5, 6, 12, 13, 19, 20, 26, 27];
       const areAllGregorianWeekendsHighlighted = gregorianValueMonthWeekendDays
         .map(value => getDay(value))
-        .every(day => day.classList.contains('-weekend'));
+        .every(day => day.classList.contains('weekend'));
       expect(areAllGregorianWeekendsHighlighted).toBe(true);
     });
 
@@ -114,7 +114,7 @@ describe('Calendar Days', () => {
       // first, inactive section's all days are hidden
       expect(
         flatDays(initialInactiveSection)
-          .filter(day => !day.classList.contains('-blank'))
+          .filter(day => !day.classList.contains('blank'))
           .every(day => {
             return day.hasAttribute('aria-hidden') && day.getAttribute('tabindex') === '-1';
           }),
@@ -125,14 +125,14 @@ describe('Calendar Days', () => {
       changeMonth(getByLabelText(/next month/i));
       expect(
         flatDays(initialInactiveSection)
-          .filter(day => !day.classList.contains('-blank'))
+          .filter(day => !day.classList.contains('blank'))
           .some(day => {
             return !day.hasAttribute('aria-hidden') && day.getAttribute('tabindex') === '0';
           }),
       ).toBe(true);
       expect(
         flatDays(initialActiveSection)
-          .filter(day => !day.classList.contains('-blank'))
+          .filter(day => !day.classList.contains('blank'))
           .every(day => {
             return day.hasAttribute('aria-hidden') && day.getAttribute('tabindex') === '-1';
           }),
@@ -234,7 +234,7 @@ describe('Calendar Days', () => {
         expect(onChange).toHaveBeenCalledTimes(1);
         expect(onChange.mock.calls[0][0]).toEqual(valueAfterFirstClick);
         rerender(<Calendar onChange={onChange} value={valueAfterFirstClick} />);
-        expect(rangeStartButton).toHaveClass('-selectedStart');
+        expect(rangeStartButton).toHaveClass('selectedStart');
 
         const rangeBetween = 11;
         const rangeBetweenButton = getDay(rangeBetween);
@@ -248,8 +248,8 @@ describe('Calendar Days', () => {
         expect(onChange).toHaveBeenCalledTimes(2);
         expect(onChange.mock.calls[1][0]).toEqual(valueAfterSecondClick);
         rerender(<Calendar onChange={onChange} value={valueAfterSecondClick} />);
-        expect(rangeEndButton).toHaveClass('-selectedEnd');
-        expect(rangeBetweenButton).toHaveClass('-selectedBetween');
+        expect(rangeEndButton).toHaveClass('selectedEnd');
+        expect(rangeBetweenButton).toHaveClass('selectedBetween');
       });
 
       test('swaps from and to when to is before from', () => {
@@ -275,8 +275,8 @@ describe('Calendar Days', () => {
         expect(onChange).toHaveBeenCalledTimes(1);
         expect(onChange.mock.calls[0][0]).toEqual(valueAfterSwap);
         rerender(<Calendar value={valueAfterSwap} />);
-        expect(rangeStartButton).toHaveClass('-selectedEnd');
-        expect(rangeEndButton).toHaveClass('-selectedStart');
+        expect(rangeStartButton).toHaveClass('selectedEnd');
+        expect(rangeEndButton).toHaveClass('selectedStart');
       });
 
       test('selects the same date as range start and range end', () => {
@@ -295,8 +295,8 @@ describe('Calendar Days', () => {
         };
         expect(onChange.mock.calls[0][0]).toEqual(valueAfterSecondClick);
         rerender(<Calendar value={valueAfterSecondClick} />);
-        expect(rangeButton).toHaveClass('-selectedStart');
-        expect(rangeButton).toHaveClass('-selectedEnd');
+        expect(rangeButton).toHaveClass('selectedStart');
+        expect(rangeButton).toHaveClass('selectedEnd');
       });
     });
   });
@@ -313,8 +313,8 @@ describe('Calendar Days', () => {
 
       fireEvent.click(getDay(2));
       expect(onChange).toHaveBeenCalledTimes(0);
-      expect(getDay(2)).toHaveClass('-disabled');
-      expect(getDay(5)).toHaveClass('-disabled');
+      expect(getDay(2)).toHaveClass('disabled');
+      expect(getDay(5)).toHaveClass('disabled');
     });
 
     test('calls onDisabledDayError prop when selecting a single disabled day', () => {
@@ -371,7 +371,7 @@ describe('Calendar Days', () => {
 
       // next month arrow click
       fireEvent.click(nextArrow);
-      const hiddenNextMonthDays = flatDays(hiddenNextMonthDaysSection).filter(day => !day.classList.contains('-blank'));
+      const hiddenNextMonthDays = flatDays(hiddenNextMonthDaysSection).filter(day => !day.classList.contains('blank'));
 
       expect(nextYearButton.textContent).toBe(String(nextMonthDate.year));
       expect(nextMonthButton.textContent).toBe(getMonthName(nextMonthDate.month));
@@ -380,7 +380,7 @@ describe('Calendar Days', () => {
       // previous month arrow click
       const [previousMonthButton, previousYearButton] = findHiddenSliderItem('month-year-container').children;
       fireEvent.click(previousArrow);
-      const hiddenPreviousMonthDays = standardDays.filter(day => !day.classList.contains('-blank'));
+      const hiddenPreviousMonthDays = standardDays.filter(day => !day.classList.contains('blank'));
 
       expect(previousYearButton.textContent).toBe(String(today.year));
       expect(previousMonthButton.textContent).toBe(getMonthName(today.month));
@@ -408,7 +408,7 @@ describe('Calendar Days', () => {
       const minimumDate = { year: 2019, month: 10, day: 22 };
       const maximumDate = { year: 2019, month: 10, day: 27 };
       const { standardDays } = renderCalendar({ minimumDate, value: minimumDate, maximumDate });
-      const areAllDisabled = list => list.every(day => day.classList.contains('-disabled'));
+      const areAllDisabled = list => list.every(day => day.classList.contains('disabled'));
       const daysBeforeMinimum = standardDays.filter(day =>
         isBeforeDate(
           {

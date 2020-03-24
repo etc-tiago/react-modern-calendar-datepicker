@@ -2,10 +2,7 @@ import React from 'react';
 import { render, fireEvent, within } from '@testing-library/react';
 
 import { Calendar } from '../src';
-import {
-  MINIMUM_SELECTABLE_YEAR_SUBTRACT,
-  MAXIMUM_SELECTABLE_YEAR_SUM,
-} from '../src/shared/constants';
+import { MINIMUM_SELECTABLE_YEAR_SUBTRACT, MAXIMUM_SELECTABLE_YEAR_SUM } from '../src/shared/constants';
 
 const renderYearSelector = (shouldOpenSelector = true, props = { value: null }) => {
   const { getAllByText, getByTestId, rerender } = render(<Calendar {...props} />);
@@ -40,15 +37,15 @@ describe('Year Selection', () => {
   test('toggles on year click', () => {
     const { yearSelector, yearButton } = renderYearSelector(false);
 
-    expect(yearSelector).not.toHaveClass('-open');
+    expect(yearSelector).not.toHaveClass('open');
 
     fireEvent.click(yearButton);
 
-    expect(yearSelector).toHaveClass('-open');
+    expect(yearSelector).toHaveClass('open');
 
     fireEvent.click(yearButton);
 
-    expect(yearSelector).not.toHaveClass('-open');
+    expect(yearSelector).not.toHaveClass('open');
   });
 
   test('renders all years', () => {
@@ -61,9 +58,7 @@ describe('Year Selection', () => {
     expect(years[years.length - 1]).toBe(lastYear);
 
     rerender(<Calendar selectorStartingYear={2000} selectorEndingYear={2050} />);
-    const newYears = Array.from(yearSelector.children).map(yearChild =>
-      Number(yearChild.textContent),
-    );
+    const newYears = Array.from(yearSelector.children).map(yearChild => Number(yearChild.textContent));
 
     expect(newYears[0]).toBe(2000);
     expect(newYears[newYears.length - 1]).toBe(2050);
@@ -71,7 +66,7 @@ describe('Year Selection', () => {
 
   test('highlights the initial active year', () => {
     const { yearsChildren, thisYearText } = renderYearSelector();
-    const activeYear = yearsChildren.find(child => child.classList.contains('-active'));
+    const activeYear = yearsChildren.find(child => child.classList.contains('active'));
 
     expect(activeYear).toBeTruthy();
     expect(activeYear.textContent).toBe(String(thisYearText));
@@ -79,7 +74,7 @@ describe('Year Selection', () => {
 
   test('scrolls to active year', () => {
     const { yearsChildren, yearButton, yearSelector } = renderYearSelector(false);
-    const activeYear = yearsChildren.find(child => child.classList.contains('-active'));
+    const activeYear = yearsChildren.find(child => child.classList.contains('active'));
     Object.defineProperties(activeYear, {
       offsetTop: { get: () => 100 },
       offsetHeight: { get: () => 10 },
@@ -91,13 +86,13 @@ describe('Year Selection', () => {
 
   test('selects a new year', () => {
     const { yearsChildren, yearSelector } = renderYearSelector();
-    const nonSelectedYear = yearsChildren.find(child => !child.classList.contains('-active'));
-    const selectedYear = yearsChildren.find(child => child.classList.contains('-active'));
+    const nonSelectedYear = yearsChildren.find(child => !child.classList.contains('active'));
+    const selectedYear = yearsChildren.find(child => child.classList.contains('active'));
     fireEvent.click(nonSelectedYear.children[0]);
 
-    expect(nonSelectedYear).toHaveClass('-active');
-    expect(selectedYear).not.toHaveClass('-active');
-    expect(yearSelector).not.toHaveClass('-open');
+    expect(nonSelectedYear).toHaveClass('active');
+    expect(selectedYear).not.toHaveClass('active');
+    expect(yearSelector).not.toHaveClass('open');
   });
 
   test('disables years according to minimum & maximum dates', () => {
