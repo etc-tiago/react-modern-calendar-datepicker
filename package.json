@@ -12,7 +12,8 @@
     "clean": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts",
     "size": "npm run build && size-limit",
-    "checkAll": "npm run size && npm run lint && npm run test"
+    "checkAll": "npm run size && npm run lint && npm run test",
+    "sass": "./node_modules/.bin/node-sass --watch playground/src/calendar.scss playground/src/calendar.css"
   },
   "files": [
     "dist",
@@ -55,7 +56,6 @@
     "concurrently": "^5.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.2.0",
-    "css-loader": "^2.1.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
@@ -69,6 +69,7 @@
     "image-webpack-loader": "^4.6.0",
     "jest": "^25.1.0",
     "lint-staged": ">=8",
+    "node-sass": "^4.13.1",
     "prettier": "^1.16.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

@@ -15,7 +15,6 @@ type ICalendar = {
   //
   onChange: any;
   onDisabledDayError: any;
-  calendarTodayClassName: any;
   calendarSelectedDayClassName: any;
   calendarRangeStartClassName: any;
   calendarRangeBetweenClassName: any;
@@ -30,7 +29,6 @@ export const Calendar: FC<ICalendar> = ({
   value,
   onChange,
   onDisabledDayError,
-  calendarTodayClassName,
   calendarSelectedDayClassName,
   calendarRangeStartClassName,
   calendarRangeBetweenClassName,
@@ -44,9 +42,7 @@ export const Calendar: FC<ICalendar> = ({
   renderFooter,
   customDaysClassName,
 }) => {
-  value = value || null;
-  customDaysClassName = customDaysClassName || [];
-  renderFooter = renderFooter || renderNull;
+  const footer = renderFooter || renderNull;
 
   const calendarElement: any = useRef(null);
   const [mainState, setMainState] = useState({
@@ -61,7 +57,7 @@ export const Calendar: FC<ICalendar> = ({
       const { key } = args;
       /* istanbul ignore else */
       if (key === 'Tab') {
-        calendarElement.current.classList.remove('-noFocusOutline');
+        calendarElement.current.classList.remove('noFocusOutline');
       }
     };
     calendarElement.current.addEventListener('keyup', handleKeyUp, false);
@@ -96,7 +92,7 @@ export const Calendar: FC<ICalendar> = ({
   const activeDate = mainState.activeDate ? shallowClone(mainState.activeDate) : getComputedActiveDate();
 
   const weekdays = weekDaysData.map((weekDay: any) => (
-    <abbr key={weekDay.name} title={weekDay.name} className="Calendar__weekDay">
+    <abbr key={weekDay.name} title={weekDay.name}>
       {weekDay.short}
     </abbr>
   ));
@@ -133,7 +129,7 @@ export const Calendar: FC<ICalendar> = ({
   };
 
   return (
-    <div className={`Calendar -noFocusOutline -ltr`} role="grid" ref={calendarElement}>
+    <div className="Calendar noFocusOutline" role="grid" ref={calendarElement}>
       <Header
         maximumDate={maximumDate || null}
         minimumDate={minimumDate || null}
@@ -164,7 +160,7 @@ export const Calendar: FC<ICalendar> = ({
         minimumDate={minimumDate || null}
       />
 
-      <div className="Calendar__weekDays">{weekdays}</div>
+      <div className="week-days">{weekdays}</div>
 
       <DaysList
         activeDate={activeDate}
@@ -176,16 +172,15 @@ export const Calendar: FC<ICalendar> = ({
         minimumDate={minimumDate || null}
         maximumDate={maximumDate || null}
         onChange={onChange}
-        calendarTodayClassName={calendarTodayClassName}
         calendarSelectedDayClassName={calendarSelectedDayClassName}
         calendarRangeStartClassName={calendarRangeStartClassName}
         calendarRangeEndClassName={calendarRangeEndClassName}
         calendarRangeBetweenClassName={calendarRangeBetweenClassName}
         shouldHighlightWeekends={shouldHighlightWeekends}
-        customDaysClassName={customDaysClassName}
+        customDaysClassName={customDaysClassName || []}
         isQuickSelectorOpen={mainState.isYearSelectorOpen || mainState.isMonthSelectorOpen}
       />
-      <div className="Calendar__footer">{renderFooter()}</div>
+      <div className="footer">{footer()}</div>
     </div>
   );
 };

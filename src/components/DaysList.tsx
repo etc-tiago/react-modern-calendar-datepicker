@@ -9,7 +9,6 @@ type IDaysList = {
   onChange: any;
   onDisabledDayError: any;
   disabledDays: IDateNumbers[];
-  calendarTodayClassName: string;
   calendarSelectedDayClassName: string;
   calendarRangeStartClassName: string;
   calendarRangeBetweenClassName: string;
@@ -34,7 +33,6 @@ export const DaysList: FC<IDaysList> = ({
   minimumDate,
   maximumDate,
   onChange,
-  calendarTodayClassName,
   calendarSelectedDayClassName,
   calendarRangeStartClassName,
   calendarRangeEndClassName,
@@ -135,7 +133,7 @@ export const DaysList: FC<IDaysList> = ({
     const { isToday, isSelected, isStartingDayRange, isEndingDayRange, isWithinRange } = getDayStatus(dayItem);
     const customDayItemClassName = customDaysClassName.find((day: any) => isSameDay(dayItem, day));
     const classNames = ''
-      .concat(isToday && !isSelected ? ` -today ${calendarTodayClassName}` : '')
+      .concat(isToday && !isSelected ? ` -today` : '')
       .concat(!dayItem.isStandard ? ' -blank' : '')
       .concat(dayItem.isWeekend && shouldHighlightWeekends ? ' -weekend' : '')
       .concat(customDayItemClassName ? ` ${customDayItemClassName.className}` : '')
@@ -188,7 +186,7 @@ export const DaysList: FC<IDaysList> = ({
     return (
       <div
         key={id}
-        className={`Calendar__day -ltr ${additionalClass}`}
+        className={`day ${additionalClass}`}
         onClick={() => {
           handleDayPress({ ...dayItem, isDisabled });
         }}
@@ -220,7 +218,7 @@ export const DaysList: FC<IDaysList> = ({
     const renderSingleWeekRow = (weekRowIndex: number) => {
       const eachWeekDays = allDays.slice(weekRowIndex * 7, weekRowIndex * 7 + 7).map(renderEachWeekDays);
       return (
-        <div key={String(weekRowIndex)} className="Calendar__weekRow" role="row">
+        <div key={String(weekRowIndex)} className="week-row" role="row">
           {eachWeekDays}
         </div>
       );
@@ -229,13 +227,13 @@ export const DaysList: FC<IDaysList> = ({
   };
 
   return (
-    <div ref={calendarSectionWrapper} className="Calendar__sectionWrapper" role="presentation" data-testid="days-section-wrapper">
+    <div ref={calendarSectionWrapper} className="section-wrapper" role="presentation" data-testid="days-section-wrapper">
       <div
         onAnimationEnd={e => {
           handleSlideAnimationEnd(e);
           onSlideChange();
         }}
-        className="Calendar__section -shown"
+        className="section shown"
         role="rowgroup"
       >
         {renderMonthDays(true)}
@@ -245,7 +243,7 @@ export const DaysList: FC<IDaysList> = ({
           handleSlideAnimationEnd(e);
           onSlideChange();
         }}
-        className="Calendar__section -hiddenNext"
+        className="section hidden-next"
         role="rowgroup"
       >
         {renderMonthDays(false)}

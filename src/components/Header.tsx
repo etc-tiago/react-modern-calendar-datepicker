@@ -42,7 +42,7 @@ export const Header: FC<IHeader> = ({
 
   useEffect(() => {
     const isOpen = isMonthSelectorOpen || isYearSelectorOpen;
-    const monthText = headerElement.current.querySelector('.Calendar__monthYear.-shown .Calendar__monthText');
+    const monthText = headerElement.current.querySelector('.Calendar__monthYear.shown .Calendar__monthText');
     const yearText = monthText.nextSibling;
     const hasActiveBackground = (element: any) => element.classList.contains('-activeBackground');
     const isInitialRender = !isOpen && !hasActiveBackground(monthText) && !hasActiveBackground(yearText);
@@ -99,7 +99,7 @@ export const Header: FC<IHeader> = ({
 
   const onMonthChangeTrigger = (direction: any) => {
     /* Array.from(monthYearWrapperElement.current.children).some */
-    const isMonthChanging = Array.from(monthYearWrapperElement.current.children).some((child: any) => child.classList.contains('-shownAnimated'));
+    const isMonthChanging = Array.from(monthYearWrapperElement.current.children).some((child: any) => child.classList.contains('shown-animated'));
     if (isMonthChanging) {
       return;
     }
@@ -116,7 +116,7 @@ export const Header: FC<IHeader> = ({
     return (
       <div
         onAnimationEnd={handleSlideAnimationEnd}
-        className={`Calendar__monthYear ${isInitialActiveChild ? '-shown' : '-hiddenNext'}`}
+        className={`Calendar__monthYear ${isInitialActiveChild ? 'shown' : 'hidden-next'}`}
         role="presentation"
         key={String(isInitialActiveChild)}
         {...hiddenStatus}
@@ -146,7 +146,7 @@ export const Header: FC<IHeader> = ({
   });
 
   return (
-    <div ref={headerElement} className="Calendar__header">
+    <div ref={headerElement} className="header">
       <button
         className="Calendar__monthArrowWrapper -right"
         onClick={() => {

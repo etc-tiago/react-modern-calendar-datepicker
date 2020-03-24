@@ -145,12 +145,7 @@ describe('DatePicker Visibility', () => {
     input.focus();
 
     fireEvent.click(rangeStart);
-    rerender(
-      <DatePicker
-        value={{ from: { year: 2019, month: 10, day: 1 }, to: null }}
-        onChange={() => {}}
-      />,
-    );
+    rerender(<DatePicker value={{ from: { year: 2019, month: 10, day: 1 }, to: null }} onChange={() => {}} />);
 
     input.focus();
 
@@ -185,8 +180,8 @@ describe('DatePicker Visibility', () => {
   test('adds focus style on keyboard navigation', () => {
     const { container } = render(<Calendar value={null} />);
 
-    expect(container.firstChild).toHaveClass('-noFocusOutline');
+    expect(container.firstChild).toHaveClass('noFocusOutline');
     fireEvent.keyUp(container.firstChild, { key: 'Tab' });
-    expect(container.firstChild).not.toHaveClass('-noFocusOutline');
+    expect(container.firstChild).not.toHaveClass('noFocusOutline');
   });
 });

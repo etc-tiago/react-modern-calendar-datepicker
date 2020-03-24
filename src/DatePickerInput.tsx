@@ -75,7 +75,7 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
         ref={ref}
         value={getValue()}
         placeholder={placeholderValue}
-        className={`DatePicker__input -ltr ${inputClassName}`}
+        className={`picket-input ${inputClassName}`}
         aria-label={placeholderValue}
       />
     )

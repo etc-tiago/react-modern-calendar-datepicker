@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import './fonts/fonts.css';
-import './DatePicker.css';
+import './calendar.css';
+
 import { DatePicker, Calendar } from '../../dist';
 
 const App = () => {

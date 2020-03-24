@@ -16,7 +16,6 @@ type IDatePicker = {
   inputClassName: any;
   renderInput: any;
 
-  calendarTodayClassName: any;
   calendarSelectedDayClassName: any;
   calendarRangeStartClassName: any;
   calendarRangeBetweenClassName: any;
@@ -40,7 +39,6 @@ export const DatePicker: FC<IDatePicker> = ({
   inputClassName,
   renderInput,
   wrapperClassName,
-  calendarTodayClassName,
   calendarSelectedDayClassName,
   calendarRangeStartClassName,
   calendarRangeBetweenClassName,
@@ -165,7 +163,7 @@ export const DatePicker: FC<IDatePicker> = ({
   }, [shouldPreventToggle, isCalendarOpen]);
 
   return (
-    <div onFocus={openCalendar} onBlur={handleBlur} onKeyUp={handleKeyUp} className={`DatePicker ${wrapperClassName}`} role="presentation">
+    <div onFocus={openCalendar} onBlur={handleBlur} onKeyUp={handleKeyUp} className={`datepicker ${wrapperClassName}`} role="presentation">
       <DatePickerInput
         ref={inputElement}
         formatInputText={formatInputText}
@@ -178,7 +176,7 @@ export const DatePicker: FC<IDatePicker> = ({
         <>
           <div
             ref={calendarContainerElement}
-            className="DatePicker__calendarContainer"
+            className="datepicker__calendarContainer"
             data-testid="calendar-container"
             role="presentation"
             onMouseDown={() => {
@@ -188,7 +186,6 @@ export const DatePicker: FC<IDatePicker> = ({
             <Calendar
               value={value}
               onChange={handleCalendarChange}
-              calendarTodayClassName={calendarTodayClassName}
               calendarSelectedDayClassName={calendarSelectedDayClassName}
               calendarRangeStartClassName={calendarRangeStartClassName}
               calendarRangeBetweenClassName={calendarRangeBetweenClassName}
@@ -204,7 +201,7 @@ export const DatePicker: FC<IDatePicker> = ({
               customDaysClassName={customDaysClassName}
             />
           </div>
-          <div className="DatePicker__calendarArrow" />
+          <div className="picker-calendar-arrow" />
         </>
       )}
     </div>

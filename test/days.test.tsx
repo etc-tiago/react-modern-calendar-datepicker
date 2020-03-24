@@ -9,15 +9,12 @@ import { Header } from '../src/components';
 
 const { getMonthLength, getToday, getMonthFirstWeekday, getMonthName, isBeforeDate } = utils('en');
 
-const flatDays = section =>
-  Array.from(section.children).reduce((previous, next) => [...previous, ...next.children], []);
+const flatDays = section => Array.from(section.children).reduce((previous, next) => [...previous, ...next.children], []);
 
 const renderCalendar = props => {
   const selectors = render(<Calendar {...props} />);
   const sectionWrapper = selectors.getByTestId('days-section-wrapper');
-  const activeSection = Array.from(sectionWrapper.children).find(child =>
-    child.classList.contains('-shown'),
-  );
+  const activeSection = Array.from(sectionWrapper.children).find(child => child.classList.contains('shown'));
   const days = flatDays(activeSection);
   const standardDays = days.filter(day => !day.classList.contains('-blank'));
   const getDay = day => getByText(activeSection, String(day));
@@ -25,7 +22,7 @@ const renderCalendar = props => {
   const sections = Array.from(selectors.getByTestId('days-section-wrapper').children);
   const monthYearItems = Array.from(selectors.getByTestId('month-year-container').children);
   const endSlideAnimation = () => {
-    const findAnimatedChild = child => child.classList.contains('-shownAnimated');
+    const findAnimatedChild = child => child.classList.contains('shown-animated');
     const animatingMonthYearItem = monthYearItems.find(findAnimatedChild);
     const animatingSectionItem = sections.find(findAnimatedChild);
     fireEvent.animationEnd(animatingMonthYearItem);
@@ -61,9 +58,7 @@ describe('Calendar Days', () => {
       const currentYear = date.year;
       const currentMonth = getMonthName(date.month);
       const { getByTestId } = renderCalendar();
-      const shownMonthYear = Array.from(getByTestId('month-year-container').children).find(child =>
-        child.classList.contains('-shown'),
-      );
+      const shownMonthYear = Array.from(getByTestId('month-year-container').children).find(child => child.classList.contains('shown'));
       const [monthButton, yearButton] = shownMonthYear.children;
 
       expect(monthButton.textContent).toBe(currentMonth);
@@ -73,9 +68,7 @@ describe('Calendar Days', () => {
     test(`shows date's month and year as title when it has value`, () => {
       const singleDateValue = { year: 2018, month: 2, day: 1 };
       const { getByTestId, rerender } = renderCalendar({ value: singleDateValue });
-      const shownMonthYear = Array.from(getByTestId('month-year-container').children).find(child =>
-        child.classList.contains('-shown'),
-      );
+      const shownMonthYear = Array.from(getByTestId('month-year-container').children).find(child => child.classList.contains('shown'));
       const [monthButton, yearButton] = shownMonthYear.children;
 
       expect(monthButton.textContent).toBe('February');
@@ -114,16 +107,9 @@ describe('Calendar Days', () => {
     });
 
     test('hides all inactive days section days', () => {
-      const {
-        sectionWrapper,
-        activeSection: initialActiveSection,
-        getByLabelText,
-        changeMonth,
-      } = renderCalendar();
+      const { sectionWrapper, activeSection: initialActiveSection, getByLabelText, changeMonth } = renderCalendar();
 
-      const initialInactiveSection = Array.from(sectionWrapper.children).find(
-        child => !child.classList.contains('-shown'),
-      );
+      const initialInactiveSection = Array.from(sectionWrapper.children).find(child => !child.classList.contains('shown'));
 
       // first, inactive section's all days are hidden
       expect(
@@ -366,11 +352,7 @@ describe('Calendar Days', () => {
       });
 
       expect(getDay(customDayToAddClass.day)).toHaveClass(customClassName);
-      expect(
-        standardDays
-          .filter(day => !isSameDay(day, customClassName))
-          .every(day => !day.classList.includes(customDayToAddClass)),
-      ).toBe(true);
+      expect(standardDays.filter(day => !isSameDay(day, customClassName)).every(day => !day.classList.includes(customDayToAddClass))).toBe(true);
     });
   });
 
@@ -379,33 +361,24 @@ describe('Calendar Days', () => {
       const { getByLabelText, getByTestId, standardDays } = renderCalendar();
       const nextArrow = getByLabelText(/next month/i);
       const previousArrow = getByLabelText(/previous month/i);
-      const findHiddenSliderItem = parentTestId =>
-        Array.from(getByTestId(parentTestId).children).find(
-          child => !child.classList.contains('-shown'),
-        );
+      const findHiddenSliderItem = parentTestId => Array.from(getByTestId(parentTestId).children).find(child => !child.classList.contains('shown'));
       const today = getToday();
       const currentMonthLength = getMonthLength(today);
       const nextMonthDate = getDateAccordingToMonth(today, 'NEXT');
       const nextMonthLength = getMonthLength(nextMonthDate);
-      const [nextMonthButton, nextYearButton] = findHiddenSliderItem(
-        'month-year-container',
-      ).children;
+      const [nextMonthButton, nextYearButton] = findHiddenSliderItem('month-year-container').children;
       const hiddenNextMonthDaysSection = findHiddenSliderItem('days-section-wrapper');
 
       // next month arrow click
       fireEvent.click(nextArrow);
-      const hiddenNextMonthDays = flatDays(hiddenNextMonthDaysSection).filter(
-        day => !day.classList.contains('-blank'),
-      );
+      const hiddenNextMonthDays = flatDays(hiddenNextMonthDaysSection).filter(day => !day.classList.contains('-blank'));
 
       expect(nextYearButton.textContent).toBe(String(nextMonthDate.year));
       expect(nextMonthButton.textContent).toBe(getMonthName(nextMonthDate.month));
       expect(hiddenNextMonthDays).toHaveLength(nextMonthLength);
 
       // previous month arrow click
-      const [previousMonthButton, previousYearButton] = findHiddenSliderItem(
-        'month-year-container',
-      ).children;
+      const [previousMonthButton, previousYearButton] = findHiddenSliderItem('month-year-container').children;
       fireEvent.click(previousArrow);
       const hiddenPreviousMonthDays = standardDays.filter(day => !day.classList.contains('-blank'));
 
@@ -417,20 +390,12 @@ describe('Calendar Days', () => {
     test('avoids parallel clicks on a month arrow button', () => {
       const mockedMonthChange = jest.fn();
       const activeDate = getToday();
-      const { getByLabelText, rerender } = render(
-        <Header activeDate={activeDate} onMonthChange={mockedMonthChange} locale="en" />,
-      );
+      const { getByLabelText, rerender } = render(<Header activeDate={activeDate} onMonthChange={mockedMonthChange} locale="en" />);
       const nextArrow = getByLabelText(/next month/i);
 
       fireEvent.click(nextArrow);
 
-      rerender(
-        <Header
-          activeDate={activeDate}
-          monthChangeDirection="NEXT"
-          onMonthChange={mockedMonthChange}
-        />,
-      );
+      rerender(<Header activeDate={activeDate} monthChangeDirection="NEXT" onMonthChange={mockedMonthChange} />);
 
       fireEvent.click(nextArrow);
 
@@ -485,12 +450,7 @@ describe('Calendar Days', () => {
       expect(nextArrow).toHaveAttribute('disabled');
 
       // previous arrow basic
-      rerender(
-        <Calendar
-          value={{ year: 2019, month: 12, day: 10 }}
-          minimumDate={{ year: 2019, month: 10, day: 5 }}
-        />,
-      );
+      rerender(<Calendar value={{ year: 2019, month: 12, day: 10 }} minimumDate={{ year: 2019, month: 10, day: 5 }} />);
       changeMonth(previousArrow);
       expect(previousArrow).not.toHaveAttribute('disabled');
 
