@@ -1,20 +1,16 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
+
 import { getDateAccordingToMonth, shallowClone, getValueType } from './shared/generalUtils';
 import { IDateNumbers, IDateRange, weekDaysData, getToday } from './shared/constants';
-
 import { Header, MonthSelector, YearSelector, DaysList } from './components';
 
 const renderNull = () => null;
 
 type ICalendar = {
   value: IDateNumbers | IDateRange | IDateNumbers[];
-  calendarClassName: string;
-  colorPrimary: string;
-  colorPrimaryLight: string;
-  slideAnimationDuration: string;
-  minimumDate: IDateNumbers | null;
-  maximumDate: IDateNumbers | null;
-  renderFooter: any;
+  minimumDate?: IDateNumbers | null;
+  maximumDate?: IDateNumbers | null;
+  renderFooter?: any;
   customDaysClassName: IDateNumbers & { className: string }[];
   //
   onChange: any;
@@ -34,16 +30,12 @@ export const Calendar: FC<ICalendar> = ({
   value,
   onChange,
   onDisabledDayError,
-  calendarClassName,
   calendarTodayClassName,
   calendarSelectedDayClassName,
   calendarRangeStartClassName,
   calendarRangeBetweenClassName,
   calendarRangeEndClassName,
   disabledDays,
-  colorPrimary,
-  colorPrimaryLight,
-  slideAnimationDuration,
   minimumDate,
   maximumDate,
   selectorStartingYear,
@@ -52,12 +44,6 @@ export const Calendar: FC<ICalendar> = ({
   renderFooter,
   customDaysClassName,
 }) => {
-  minimumDate = minimumDate || null;
-  maximumDate = maximumDate || null;
-  colorPrimary = colorPrimary || '#0eca2d';
-  colorPrimaryLight = colorPrimaryLight || '#cff4d5';
-  slideAnimationDuration = slideAnimationDuration || '0.4s';
-  calendarClassName = calendarClassName || '';
   value = value || null;
   customDaysClassName = customDaysClassName || [];
   renderFooter = renderFooter || renderNull;
@@ -74,7 +60,9 @@ export const Calendar: FC<ICalendar> = ({
     const handleKeyUp = (args: any) => {
       const { key } = args;
       /* istanbul ignore else */
-      if (key === 'Tab') calendarElement.current.classList.remove('-noFocusOutline');
+      if (key === 'Tab') {
+        calendarElement.current.classList.remove('-noFocusOutline');
+      }
     };
     calendarElement.current.addEventListener('keyup', handleKeyUp, false);
     return () => {
@@ -93,15 +81,19 @@ export const Calendar: FC<ICalendar> = ({
 
   const getComputedActiveDate = () => {
     const valueType = getValueType(value);
-    if (valueType === 'multi' && (value as any).length) return shallowClone((value as any)[0]);
-    if (valueType === 'single' && value) return shallowClone(value);
-    if (valueType === 'range' && (value as any).from) return shallowClone((value as any).from);
+    if (valueType === 'multi' && (value as any).length) {
+      return shallowClone((value as any)[0]);
+    }
+    if (valueType === 'single' && value) {
+      return shallowClone(value);
+    }
+    if (valueType === 'range' && (value as any).from) {
+      return shallowClone((value as any).from);
+    }
     return shallowClone(today);
   };
 
-  const activeDate = mainState.activeDate
-    ? shallowClone(mainState.activeDate)
-    : getComputedActiveDate();
+  const activeDate = mainState.activeDate ? shallowClone(mainState.activeDate) : getComputedActiveDate();
 
   const weekdays = weekDaysData.map((weekDay: any) => (
     <abbr key={weekDay.name} title={weekDay.name} className="Calendar__weekDay">
@@ -140,21 +132,11 @@ export const Calendar: FC<ICalendar> = ({
     });
   };
 
-  const calendarStyle: any = {
-    '--cl-color-primary': colorPrimary,
-    '--cl-color-primary-light': colorPrimaryLight,
-    '--animation-duration': slideAnimationDuration,
-  };
   return (
-    <div
-      className={`Calendar -noFocusOutline ${calendarClassName} -ltr`}
-      role="grid"
-      style={calendarStyle}
-      ref={calendarElement}
-    >
+    <div className={`Calendar -noFocusOutline -ltr`} role="grid" ref={calendarElement}>
       <Header
-        maximumDate={maximumDate}
-        minimumDate={minimumDate}
+        maximumDate={maximumDate || null}
+        minimumDate={minimumDate || null}
         activeDate={activeDate}
         onMonthChange={handleMonthChange}
         onMonthSelect={toggleMonthSelector}
@@ -168,8 +150,8 @@ export const Calendar: FC<ICalendar> = ({
         isOpen={mainState.isMonthSelectorOpen}
         activeDate={activeDate}
         onMonthSelect={selectMonth}
-        maximumDate={maximumDate}
-        minimumDate={minimumDate}
+        maximumDate={maximumDate || null}
+        minimumDate={minimumDate || null}
       />
 
       <YearSelector
@@ -178,8 +160,8 @@ export const Calendar: FC<ICalendar> = ({
         onYearSelect={selectYear}
         selectorStartingYear={selectorStartingYear}
         selectorEndingYear={selectorEndingYear}
-        maximumDate={maximumDate}
-        minimumDate={minimumDate}
+        maximumDate={maximumDate || null}
+        minimumDate={minimumDate || null}
       />
 
       <div className="Calendar__weekDays">{weekdays}</div>
@@ -191,8 +173,8 @@ export const Calendar: FC<ICalendar> = ({
         onSlideChange={updateDate}
         disabledDays={disabledDays}
         onDisabledDayError={onDisabledDayError}
-        minimumDate={minimumDate}
-        maximumDate={maximumDate}
+        minimumDate={minimumDate || null}
+        maximumDate={maximumDate || null}
         onChange={onChange}
         calendarTodayClassName={calendarTodayClassName}
         calendarSelectedDayClassName={calendarSelectedDayClassName}

@@ -422,7 +422,7 @@
 
 .Calendar__monthSelectorItem.-active .Calendar__monthSelectorItemText,
 .Calendar__yearSelectorItem.-active .Calendar__yearSelectorText {
-  background-color: var(--cl-color-primary);
+  background-color: #0eca2d;
   color: #fff;
 }
 
@@ -539,7 +539,7 @@
 .Calendar__day.-selected,
 .Calendar__day.-selectedStart,
 .Calendar__day.-selectedEnd {
-  background: var(--cl-color-primary);
+  background: #0eca2d;
   color: #fff;
 }
 
@@ -556,8 +556,8 @@
 }
 
 .Calendar__day.-selectedBetween {
-  background: var(--cl-color-primary-light);
-  color: var(--cl-color-primary);
+  background: #cff4d5;
+  color: #0eca2d;
   border-radius: 0;
 }
 

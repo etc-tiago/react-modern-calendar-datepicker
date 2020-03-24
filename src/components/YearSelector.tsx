@@ -32,17 +32,14 @@ export const YearSelector: FC<YearSelector> = ({
   }
   useEffect(() => {
     const classToggleMethod = isOpen ? 'add' : 'remove';
-    const activeSelectorYear = wrapperElement.current.querySelector(
-      '.Calendar__yearSelectorItem.-active',
-    );
+    const activeSelectorYear = wrapperElement.current.querySelector('.Calendar__yearSelectorItem.-active');
     if (!activeSelectorYear) {
       throw new RangeError(
         `Provided value for year is out of selectable year range. You're probably using a wrong locale prop value or your provided value's locale is different from the date picker locale. Try changing the 'locale' prop or the value you've provided.`,
       );
     }
     wrapperElement.current.classList[classToggleMethod]('-faded');
-    yearListElement.current.scrollTop =
-      activeSelectorYear.offsetTop - activeSelectorYear.offsetHeight * 5;
+    yearListElement.current.scrollTop = activeSelectorYear.offsetTop - activeSelectorYear.offsetHeight * 5;
     yearListElement.current.classList[classToggleMethod]('-open');
   }, [isOpen]);
 
@@ -72,17 +69,8 @@ export const YearSelector: FC<YearSelector> = ({
   };
 
   return (
-    <div
-      className="Calendar__yearSelectorAnimationWrapper"
-      role="presentation"
-      {...(isOpen ? {} : { 'aria-hidden': true })}
-    >
-      <div
-        ref={wrapperElement}
-        className="Calendar__yearSelectorWrapper"
-        role="presentation"
-        data-testid="year-selector-wrapper"
-      >
+    <div className="Calendar__yearSelectorAnimationWrapper" role="presentation" {...(isOpen ? {} : { 'aria-hidden': true })}>
+      <div ref={wrapperElement} className="Calendar__yearSelectorWrapper" role="presentation" data-testid="year-selector-wrapper">
         <ul ref={yearListElement} className="Calendar__yearSelector" data-testid="year-selector">
           {renderSelectorYears()}
         </ul>

@@ -7,7 +7,9 @@ const createUniqueRange = (numbers: any, startingId?: any) =>
   }));
 
 const isSameDay = (day1: IDateNumbers, day2: IDateNumbers) => {
-  if (!day1 || !day2) return false;
+  if (!day1 || !day2) {
+    return false;
+  }
   return day1.day === day2.day && day1.month === day2.month && day1.year === day2.year;
 };
 
@@ -17,8 +19,7 @@ const toExtendedDay = (date: IDateNumbers) => [date.year, date.month, date.day];
 
 const shallowClone = (value: any) => ({ ...value });
 
-const deepCloneObject = (obj: any) =>
-  JSON.parse(JSON.stringify(obj, (_key, value) => (typeof value === 'undefined' ? null : value)));
+const deepCloneObject = (obj: any) => JSON.parse(JSON.stringify(obj, (_key, value) => (typeof value === 'undefined' ? null : value)));
 
 const getDateAccordingToMonth = (date: IDateNumbers, direction: string) => {
   const toSum = direction === 'NEXT' ? 1 : -1;
@@ -36,31 +37,19 @@ const getDateAccordingToMonth = (date: IDateNumbers, direction: string) => {
   return newDate;
 };
 
-export const hasProperty = (object: any, propertyName: string) =>
-  Object.prototype.hasOwnProperty.call(object || {}, propertyName);
+export const hasProperty = (object: any, propertyName: string) => Object.prototype.hasOwnProperty.call(object || {}, propertyName);
 
 export const getValueType = (value: any): ITypeSelect => {
   if (Array.isArray(value)) {
     return 'multi';
   }
-  if (hasProperty(value, 'from') && hasProperty(value, 'to')) return 'range';
-  if (
-    !value ||
-    (hasProperty(value, 'year') && hasProperty(value, 'month') && hasProperty(value, 'day'))
-  ) {
+  if (hasProperty(value, 'from') && hasProperty(value, 'to')) {
+    return 'range';
+  }
+  if (!value || (hasProperty(value, 'year') && hasProperty(value, 'month') && hasProperty(value, 'day'))) {
     return 'single';
   }
-  throw new TypeError(
-    `The passed value is malformed! Please make sure you're using one of the valid value types for date picker.`,
-  );
+  throw new TypeError(`The passed value is malformed! Please make sure you're using one of the valid value types for date picker.`);
 };
 
-export {
-  createUniqueRange,
-  isSameDay,
-  putZero,
-  toExtendedDay,
-  shallowClone,
-  deepCloneObject,
-  getDateAccordingToMonth,
-};
+export { createUniqueRange, isSameDay, putZero, toExtendedDay, shallowClone, deepCloneObject, getDateAccordingToMonth };

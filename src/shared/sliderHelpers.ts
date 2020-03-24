@@ -6,8 +6,7 @@ const getSlideDate = (args: any) => {
     return isInitialActiveChild ? activeDate : getDateAccordingToMonth(activeDate, 'NEXT');
   }
   const child = parent.children[isInitialActiveChild ? 0 : 1];
-  const isActiveSlide =
-    child.classList.contains('-shown') || child.classList.contains('-shownAnimated'); // check -shownAnimated for Safari bug
+  const isActiveSlide = child.classList.contains('-shown') || child.classList.contains('-shownAnimated'); // check -shownAnimated for Safari bug
   return isActiveSlide ? activeDate : getDateAccordingToMonth(activeDate, monthChangeDirection);
 };
 

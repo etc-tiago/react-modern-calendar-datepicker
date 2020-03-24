@@ -42,7 +42,9 @@ export const getMonthFirstWeekday = (date: IDateNumbers) => {
 
 export const checkDayInDayRange = (date: IDateRange) => {
   const { day, from, to } = date;
-  if (!day || !from || !to) return false;
+  if (!day || !from || !to) {
+    return false;
+  }
   const nativeDay = getNativeDate(day as any);
   const nativeFrom = getNativeDate(from);
   const nativeTo = getNativeDate(to);
@@ -73,6 +75,8 @@ export type ITypeSelect = 'single' | 'range' | 'multi';
 export const getNativeDate = (date: IDateNumbers) => new Date(date.year, date.month - 1, date.day);
 
 export const isBefore = (day1: IDateNumbers | null, day2: IDateNumbers | null) => {
-  if (!day1 || !day2) return false;
+  if (!day1 || !day2) {
+    return false;
+  }
   return getNativeDate(day1) < getNativeDate(day2);
 };

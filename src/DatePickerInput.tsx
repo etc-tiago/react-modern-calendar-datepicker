@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+
 import { putZero, getValueType } from './shared/generalUtils';
 import { IDateNumbers, CalendarLabels } from './shared/constants';
 
@@ -21,7 +22,9 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
   const inputPlaceholder = props.inputPlaceholder || '';
 
   const getSingleDayValue = () => {
-    if (!value) return '';
+    if (!value) {
+      return '';
+    }
     const year = value.year;
     const month = putZero(value.month);
     const day = putZero(value.day);
@@ -30,7 +33,9 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
 
   const getDayRangeValue = () => {
     const yearLetterSkip = 0;
-    if (!value.from || !value.to) return '';
+    if (!value.from || !value.to) {
+      return '';
+    }
     const { from, to } = value;
     const fromText = `${putZero(from.year)
       .toString()
@@ -46,7 +51,9 @@ const DatePickerInput = forwardRef((props: IDatePickerInput, ref: any) => {
   };
 
   const getValue = () => {
-    if (formatInputText()) return formatInputText();
+    if (formatInputText()) {
+      return formatInputText();
+    }
     const valueType = getValueType(value);
     switch (valueType) {
       case 'single':
