@@ -42,7 +42,7 @@ export const Header: FC<IHeader> = ({
 
   useEffect(() => {
     const isOpen = isMonthSelectorOpen || isYearSelectorOpen;
-    const monthText = headerElement.current.querySelector('.Calendar__monthYear.shown .Calendar__monthText');
+    const monthText = headerElement.current.querySelector('.month-year.shown .month-text');
     const yearText = monthText.nextSibling;
     const hasActiveBackground = (element: any) => element.classList.contains('-activeBackground');
     const isInitialRender = !isOpen && !hasActiveBackground(monthText) && !hasActiveBackground(yearText);
@@ -50,7 +50,7 @@ export const Header: FC<IHeader> = ({
       return;
     }
 
-    const arrows = [...headerElement.current.querySelectorAll('.Calendar__monthArrowWrapper')];
+    const arrows = [...headerElement.current.querySelectorAll('.month-arrow-wrapper')];
     const hasMonthSelectorToggled = isMonthSelectorOpen || hasActiveBackground(monthText);
     const primaryElement = hasMonthSelectorToggled ? monthText : yearText;
     const secondaryElement = hasMonthSelectorToggled ? yearText : monthText;
@@ -116,7 +116,7 @@ export const Header: FC<IHeader> = ({
     return (
       <div
         onAnimationEnd={handleSlideAnimationEnd}
-        className={`Calendar__monthYear ${isInitialActiveChild ? 'shown' : 'hidden-next'}`}
+        className={`month-year ${isInitialActiveChild ? 'shown' : 'hidden-next'}`}
         role="presentation"
         key={String(isInitialActiveChild)}
         {...hiddenStatus}
@@ -124,7 +124,7 @@ export const Header: FC<IHeader> = ({
         <button
           onClick={onMonthSelect}
           type="button"
-          className="Calendar__monthText"
+          className="month-text"
           aria-label={isMonthSelectorOpen ? CalendarLabels.closeMonthSelector : CalendarLabels.openMonthSelector}
           tabIndex={isActiveMonth ? 0 : -1}
           {...hiddenStatus}
@@ -134,7 +134,7 @@ export const Header: FC<IHeader> = ({
         <button
           onClick={onYearSelect}
           type="button"
-          className="Calendar__yearText"
+          className="year-text"
           aria-label={isYearSelectorOpen ? CalendarLabels.closeYearSelector : CalendarLabels.openYearSelector}
           tabIndex={isActiveMonth ? 0 : -1}
           {...hiddenStatus}
@@ -148,7 +148,7 @@ export const Header: FC<IHeader> = ({
   return (
     <div ref={headerElement} className="header">
       <button
-        className="Calendar__monthArrowWrapper -right"
+        className="month-arrow-wrapper -right"
         onClick={() => {
           onMonthChangeTrigger('PREVIOUS');
         }}
@@ -156,14 +156,14 @@ export const Header: FC<IHeader> = ({
         type="button"
         disabled={isPreviousMonthArrowDisabled || false}
       >
-        <span className="Calendar__monthArrow" />
+        <span className="month-arrow" />
       </button>
-      <div className="Calendar__monthYearContainer" ref={monthYearWrapperElement} data-testid="month-year-container">
+      <div className="month-year-container" ref={monthYearWrapperElement} data-testid="month-year-container">
         &nbsp;
         {monthYearButtons}
       </div>
       <button
-        className="Calendar__monthArrowWrapper -left"
+        className="month-arrow-wrapper -left"
         onClick={() => {
           onMonthChangeTrigger('NEXT');
         }}
@@ -171,7 +171,7 @@ export const Header: FC<IHeader> = ({
         type="button"
         disabled={isNextMonthArrowDisabled || false}
       >
-        <span className="Calendar__monthArrow" />
+        <span className="month-arrow" />
       </button>
     </div>
   );

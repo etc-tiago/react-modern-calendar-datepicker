@@ -32,11 +32,9 @@ export const YearSelector: FC<YearSelector> = ({
   }
   useEffect(() => {
     const classToggleMethod = isOpen ? 'add' : 'remove';
-    const activeSelectorYear = wrapperElement.current.querySelector('.Calendar__yearSelectorItem.-active');
+    const activeSelectorYear = wrapperElement.current.querySelector('.year-selector-item.-active');
     if (!activeSelectorYear) {
-      throw new RangeError(
-        `Provided value for year is out of selectable year range. You're probably using a wrong locale prop value or your provided value's locale is different from the date picker locale. Try changing the 'locale' prop or the value you've provided.`,
-      );
+      throw new RangeError('O valor fornecido para o ano está fora do intervalo de anos selecionável.');
     }
     wrapperElement.current.classList[classToggleMethod]('-faded');
     yearListElement.current.scrollTop = activeSelectorYear.offsetTop - activeSelectorYear.offsetHeight * 5;
@@ -49,10 +47,10 @@ export const YearSelector: FC<YearSelector> = ({
       const isBeforeMinimumDate = minimumDate && item < minimumDate.year;
       const isSelected = activeDate.year === item;
       return (
-        <li key={item} className={`Calendar__yearSelectorItem ${isSelected ? '-active' : ''}`}>
+        <li key={item} className={`year-selector-item ${isSelected ? '-active' : ''}`}>
           <button
             tabIndex={isSelected && isOpen ? 0 : -1}
-            className="Calendar__yearSelectorText"
+            className="year-selector-text"
             type="button"
             onClick={() => {
               onYearSelect(item);
@@ -69,9 +67,9 @@ export const YearSelector: FC<YearSelector> = ({
   };
 
   return (
-    <div className="Calendar__yearSelectorAnimationWrapper" role="presentation" {...(isOpen ? {} : { 'aria-hidden': true })}>
-      <div ref={wrapperElement} className="Calendar__yearSelectorWrapper" role="presentation" data-testid="year-selector-wrapper">
-        <ul ref={yearListElement} className="Calendar__yearSelector" data-testid="year-selector">
+    <div className="year-selector-animation-wrapper" role="presentation" {...(isOpen ? {} : { 'aria-hidden': true })}>
+      <div ref={wrapperElement} className="year-selector-wrapper" role="presentation" data-testid="year-selector-wrapper">
+        <ul ref={yearListElement} className="year-selector" data-testid="year-selector">
           {renderSelectorYears()}
         </ul>
       </div>

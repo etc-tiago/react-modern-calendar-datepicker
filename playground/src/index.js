@@ -12,10 +12,10 @@ const App = () => {
   return (
     <div className="page">
       <div className="divisao">
-        <DatePicker value={selectedDay} onChange={setValue} shouldHighlightWeekends />
+        <Calendar value={selectedDay} onChange={setValue} shouldHighlightWeekends />
       </div>
       <div className="divisao">
-        <Calendar value={selectedDay} onChange={setValue} shouldHighlightWeekends />
+        <DatePicker value={selectedDay} onChange={setValue} shouldHighlightWeekends />
       </div>
     </div>
   );

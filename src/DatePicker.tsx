@@ -176,7 +176,7 @@ export const DatePicker: FC<IDatePicker> = ({
         <>
           <div
             ref={calendarContainerElement}
-            className="datepicker__calendarContainer"
+            className="datepicker-calendar-container"
             data-testid="calendar-container"
             role="presentation"
             onMouseDown={() => {

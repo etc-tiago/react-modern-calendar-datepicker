@@ -22,13 +22,13 @@ export const MonthSelector = (props: any) => {
         (isBefore({ ...monthDate, month: monthNumber + 1 }, minimumDate) || isSameDay({ ...monthDate, month: monthNumber + 1 }, minimumDate));
       const isSelected = monthNumber === activeDate.month;
       return (
-        <li key={persianMonth} className={`Calendar__monthSelectorItem ${isSelected ? '-active' : ''}`}>
+        <li key={persianMonth} className={`month-selector-item ${isSelected ? '-active' : ''}`}>
           <button
             tabIndex={isSelected && isOpen ? 0 : -1}
             onClick={() => {
               onMonthSelect(monthNumber);
             }}
-            className="Calendar__monthSelectorItemText"
+            className="month-selector-item-text"
             type="button"
             disabled={isAfterMaximumDate || isBeforeMinimumDate}
             aria-pressed={isSelected}
@@ -40,9 +40,9 @@ export const MonthSelector = (props: any) => {
       );
     });
   return (
-    <div role="presentation" className="Calendar__monthSelectorAnimationWrapper" {...(isOpen ? {} : { 'aria-hidden': true })}>
-      <div role="presentation" data-testid="month-selector-wrapper" className="Calendar__monthSelectorWrapper">
-        <ul ref={monthSelector} className="Calendar__monthSelector" data-testid="month-selector">
+    <div role="presentation" className="month-selector-animation-wrapper" {...(isOpen ? {} : { 'aria-hidden': true })}>
+      <div role="presentation" data-testid="month-selector-wrapper" className="month-selector-wrapper">
+        <ul ref={monthSelector} className="month-selector" data-testid="month-selector">
           {renderMonthSelectorItems()}
         </ul>
       </div>
