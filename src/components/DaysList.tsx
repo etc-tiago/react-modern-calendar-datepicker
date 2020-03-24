@@ -1,21 +1,9 @@
 import React, { FC, useRef, useEffect } from 'react';
 import { getDaysInMonth } from 'date-fns';
+
 import { getSlideDate, handleSlideAnimationEnd, animateContent } from '../shared/sliderHelpers';
-import {
-  deepCloneObject,
-  isSameDay,
-  createUniqueRange,
-  getValueType,
-} from '../shared/generalUtils';
-import {
-  IDateNumbers,
-  weekDaysData,
-  getMonthName,
-  isBefore,
-  getToday,
-  getMonthFirstWeekday,
-  checkDayInDayRange,
-} from '../shared/constants';
+import { deepCloneObject, isSameDay, createUniqueRange, getValueType } from '../shared/generalUtils';
+import { IDateNumbers, weekDaysData, getMonthName, isBefore, getToday, getMonthFirstWeekday, checkDayInDayRange } from '../shared/constants';
 
 type IDaysList = {
   onChange: any;
@@ -59,7 +47,9 @@ export const DaysList: FC<IDaysList> = ({
   const today = getToday();
 
   useEffect(() => {
-    if (!monthChangeDirection) return;
+    if (!monthChangeDirection) {
+      return;
+    }
     animateContent({
       direction: monthChangeDirection,
       parent: calendarSectionWrapper.current,
@@ -68,8 +58,7 @@ export const DaysList: FC<IDaysList> = ({
 
   const getDayRangeValue = (day: any) => {
     const clonedDayRange = deepCloneObject(value);
-    const dayRangeValue =
-      clonedDayRange.from && clonedDayRange.to ? { from: null, to: null } : clonedDayRange;
+    const dayRangeValue = clonedDayRange.from && clonedDayRange.to ? { from: null, to: null } : clonedDayRange;
     const dayRangeProp = !dayRangeValue.from ? 'from' : 'to';
     dayRangeValue[dayRangeProp] = day;
     const { from, to } = dayRangeValue;
@@ -124,7 +113,9 @@ export const DaysList: FC<IDaysList> = ({
 
   const isSingleDateSelected = (day: any) => {
     const valueType = getValueType(value);
-    if (valueType === 'single') return isSameDay(day, value);
+    if (valueType === 'single') {
+      return isSameDay(day, value);
+    }
     if (valueType === 'multi') {
       return value.some((valueDay: any) => isSameDay(valueDay, day));
     }
@@ -141,13 +132,7 @@ export const DaysList: FC<IDaysList> = ({
   };
 
   const getDayClassNames = (dayItem: any) => {
-    const {
-      isToday,
-      isSelected,
-      isStartingDayRange,
-      isEndingDayRange,
-      isWithinRange,
-    } = getDayStatus(dayItem);
+    const { isToday, isSelected, isStartingDayRange, isEndingDayRange, isWithinRange } = getDayStatus(dayItem);
     const customDayItemClassName = customDaysClassName.find((day: any) => isSameDay(dayItem, day));
     const classNames = ''
       .concat(isToday && !isSelected ? ` -today ${calendarTodayClassName}` : '')
@@ -165,14 +150,12 @@ export const DaysList: FC<IDaysList> = ({
   const getViewMonthDays = (date: any) => {
     // to match month starting date with the correct weekday label
     const prependingBlankDays = createUniqueRange(getMonthFirstWeekday(date), 'starting-blank');
-    const standardDays = createUniqueRange(getDaysInMonth(new Date(date.year, date.month - 1))).map(
-      (day: any) => ({
-        ...day,
-        isStandard: true,
-        month: date.month,
-        year: date.year,
-      }),
-    );
+    const standardDays = createUniqueRange(getDaysInMonth(new Date(date.year, date.month - 1))).map((day: any) => ({
+      ...day,
+      isStandard: true,
+      month: date.month,
+      year: date.year,
+    }));
     const allDays = [...prependingBlankDays, ...standardDays];
     return allDays;
   };
@@ -181,25 +164,22 @@ export const DaysList: FC<IDaysList> = ({
     const { isDisabled, ...dayItem } = args;
     if (isDisabled) {
       onDisabledDayError(dayItem); // good for showing error messages
-    } else handleDayClick(dayItem);
+    } else {
+      handleDayClick(dayItem);
+    }
   };
 
   const renderEachWeekDays = (args: any, index: number) => {
     const { id, value: day, month, year, isStandard } = args;
     const dayItem = { day, month, year };
     /* disabledDays.some */
-    const isInDisabledDaysRange = disabledDays
-      ? disabledDays.some(disabledDay => isSameDay(dayItem, disabledDay))
-      : null;
+    const isInDisabledDaysRange = disabledDays ? disabledDays.some(disabledDay => isSameDay(dayItem, disabledDay)) : null;
     const isBeforeMinimumDate = isBefore(dayItem, minimumDate);
     const isAfterMaximumDate = isBefore(maximumDate, dayItem);
     const isNotInValidRange = isStandard && (isBeforeMinimumDate || isAfterMaximumDate);
     const isDisabled = isInDisabledDaysRange || isNotInValidRange;
     /* GREGORIAN_WEEK_DAYS.some */
-    const isWeekend = weekDaysData.some(
-      (weekDayItem: any, weekDayItemIndex: any) =>
-        weekDayItem.isWeekend && weekDayItemIndex === index,
-    );
+    const isWeekend = weekDaysData.some((weekDayItem: any, weekDayItemIndex: any) => weekDayItem.isWeekend && weekDayItemIndex === index);
     const additionalClass = getDayClassNames({ ...dayItem, isWeekend, isStandard, isDisabled });
     const dayLabel = `${weekDaysData[index].name}, ${day} ${getMonthName(month)} ${year}`;
     const isOnActiveSlide = month === activeDate.month;
@@ -214,7 +194,9 @@ export const DaysList: FC<IDaysList> = ({
         }}
         onKeyDown={({ key }) => {
           /* istanbul ignore else */
-          if (key === 'Enter') handleDayPress({ ...dayItem, isDisabled });
+          if (key === 'Enter') {
+            handleDayPress({ ...dayItem, isDisabled });
+          }
         }}
         aria-disabled={isDisabled}
         aria-label={dayLabel}
@@ -236,9 +218,7 @@ export const DaysList: FC<IDaysList> = ({
     });
     const allDays = getViewMonthDays(date);
     const renderSingleWeekRow = (weekRowIndex: number) => {
-      const eachWeekDays = allDays
-        .slice(weekRowIndex * 7, weekRowIndex * 7 + 7)
-        .map(renderEachWeekDays);
+      const eachWeekDays = allDays.slice(weekRowIndex * 7, weekRowIndex * 7 + 7).map(renderEachWeekDays);
       return (
         <div key={String(weekRowIndex)} className="Calendar__weekRow" role="row">
           {eachWeekDays}
@@ -249,12 +229,7 @@ export const DaysList: FC<IDaysList> = ({
   };
 
   return (
-    <div
-      ref={calendarSectionWrapper}
-      className="Calendar__sectionWrapper"
-      role="presentation"
-      data-testid="days-section-wrapper"
-    >
+    <div ref={calendarSectionWrapper} className="Calendar__sectionWrapper" role="presentation" data-testid="days-section-wrapper">
       <div
         onAnimationEnd={e => {
           handleSlideAnimationEnd(e);

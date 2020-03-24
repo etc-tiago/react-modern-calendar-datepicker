@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useLayoutEffect, FC } from 'react';
+
 import { Calendar } from './Calendar';
 import DatePickerInput from './DatePickerInput';
 import { getValueType } from './shared/generalUtils';
@@ -15,24 +16,20 @@ type IDatePicker = {
   inputClassName: any;
   renderInput: any;
 
-  calendarClassName: any;
-  calendarTodayClassName: any;
-  calendarSelectedDayClassName: any;
-  calendarRangeStartClassName: any;
-  calendarRangeBetweenClassName: any;
-  calendarRangeEndClassName: any;
-  disabledDays: any;
-  onDisabledDayError: any;
-  colorPrimary: any;
-  colorPrimaryLight: any;
-  slideAnimationDuration: any;
-  minimumDate: any;
-  maximumDate: any;
-  selectorStartingYear: any;
-  selectorEndingYear: any;
-  shouldHighlightWeekends: any;
-  renderFooter: any;
-  customDaysClassName: any;
+  calendarTodayClassName?: any;
+  calendarSelectedDayClassName?: any;
+  calendarRangeStartClassName?: any;
+  calendarRangeBetweenClassName?: any;
+  calendarRangeEndClassName?: any;
+  disabledDays?: any;
+  onDisabledDayError?: any;
+  minimumDate?: any;
+  maximumDate?: any;
+  selectorStartingYear?: any;
+  selectorEndingYear?: any;
+  shouldHighlightWeekends: boolean;
+  renderFooter?: any;
+  customDaysClassName?: any;
 };
 
 export const DatePicker: FC<IDatePicker> = ({
@@ -43,7 +40,6 @@ export const DatePicker: FC<IDatePicker> = ({
   inputClassName,
   renderInput,
   wrapperClassName,
-  calendarClassName,
   calendarTodayClassName,
   calendarSelectedDayClassName,
   calendarRangeStartClassName,
@@ -51,9 +47,6 @@ export const DatePicker: FC<IDatePicker> = ({
   calendarRangeEndClassName,
   disabledDays,
   onDisabledDayError,
-  colorPrimary,
-  colorPrimaryLight,
-  slideAnimationDuration,
   minimumDate,
   maximumDate,
   selectorStartingYear,
@@ -67,30 +60,35 @@ export const DatePicker: FC<IDatePicker> = ({
   const shouldPreventToggle: any = useRef(false);
   const [isCalendarOpen, setCalendarVisiblity] = useState(false);
 
-  renderFooter = renderFooter || renderNull;
+  const footer = renderFooter || renderNull;
 
   useEffect(() => {
-    const handleBlur = () => {
+    const executeBlur = () => {
       setCalendarVisiblity(false);
     };
-    window.addEventListener('blur', handleBlur, false);
+    window.addEventListener('blur', executeBlur, false);
     return () => {
-      window.removeEventListener('blur', handleBlur, false);
+      window.removeEventListener('blur', executeBlur, false);
     };
   }, []);
 
   // handle input focus/blur
   useEffect(() => {
     const valueType = getValueType(value);
-    if (valueType === 'multi') return; // no need to close the calendar
-    const shouldCloseCalendar =
-      valueType === 'single' ? !isCalendarOpen : !isCalendarOpen && value.from && value.to;
-    if (shouldCloseCalendar) inputElement.current.blur();
+    if (valueType === 'multi') {
+      return;
+    } // no need to close the calendar
+    const shouldCloseCalendar = valueType === 'single' ? !isCalendarOpen : !isCalendarOpen && value.from && value.to;
+    if (shouldCloseCalendar) {
+      inputElement.current.blur();
+    }
   }, [value, isCalendarOpen]);
 
   const handleBlur = (e: any) => {
     e.persist();
-    if (!isCalendarOpen) return;
+    if (!isCalendarOpen) {
+      return;
+    }
     const isInnerElementFocused = calendarContainerElement.current.contains(e.relatedTarget);
     if (shouldPreventToggle.current) {
       shouldPreventToggle.current = false;
@@ -103,12 +101,16 @@ export const DatePicker: FC<IDatePicker> = ({
   };
 
   const openCalendar = () => {
-    if (!shouldPreventToggle.current) setCalendarVisiblity(true);
+    if (!shouldPreventToggle.current) {
+      setCalendarVisiblity(true);
+    }
   };
 
   // Keep the calendar in the screen bounds if input is near the window edges
   useLayoutEffect(() => {
-    if (!isCalendarOpen) return;
+    if (!isCalendarOpen) {
+      return;
+    }
     const { left, width, height, top } = calendarContainerElement.current.getBoundingClientRect();
     const { clientWidth, clientHeight } = document.documentElement;
     const isOverflowingFromRight = left + width > clientWidth;
@@ -118,25 +120,30 @@ export const DatePicker: FC<IDatePicker> = ({
     const getLeftStyle = () => {
       const overflowFromRightDistance = left + width - clientWidth;
 
-      if (!isOverflowingFromRight && !isOverflowingFromLeft) return;
+      if (!isOverflowingFromRight && !isOverflowingFromLeft) {
+        return;
+      }
       const overflowFromLeftDistance = Math.abs(left);
       const rightPosition = isOverflowingFromLeft ? overflowFromLeftDistance : 0;
 
-      const leftStyle = isOverflowingFromRight
-        ? `calc(50% - ${overflowFromRightDistance}px)`
-        : `calc(50% + ${rightPosition}px)`;
+      const leftStyle = isOverflowingFromRight ? `calc(50% - ${overflowFromRightDistance}px)` : `calc(50% + ${rightPosition}px)`;
       return leftStyle;
     };
 
     calendarContainerElement.current.style.left = getLeftStyle();
-    if (isOverflowingFromBottom) calendarContainerElement.current.classList.add('-top');
+    if (isOverflowingFromBottom) {
+      calendarContainerElement.current.classList.add('-top');
+    }
   }, [isCalendarOpen]);
 
   const handleCalendarChange = (newValue: any) => {
     const valueType = getValueType(value);
     onChange(newValue);
-    if (valueType === 'single') setCalendarVisiblity(false);
-    else if (valueType === 'range' && newValue.from && newValue.to) setCalendarVisiblity(false);
+    if (valueType === 'single') {
+      setCalendarVisiblity(false);
+    } else if (valueType === 'range' && newValue.from && newValue.to) {
+      setCalendarVisiblity(false);
+    }
   };
 
   const handleKeyUp = (props: any) => {
@@ -160,13 +167,7 @@ export const DatePicker: FC<IDatePicker> = ({
   }, [shouldPreventToggle, isCalendarOpen]);
 
   return (
-    <div
-      onFocus={openCalendar}
-      onBlur={handleBlur}
-      onKeyUp={handleKeyUp}
-      className={`DatePicker ${wrapperClassName}`}
-      role="presentation"
-    >
+    <div onFocus={openCalendar} onBlur={handleBlur} onKeyUp={handleKeyUp} className={`DatePicker ${wrapperClassName}`} role="presentation">
       <DatePickerInput
         ref={inputElement}
         formatInputText={formatInputText}
@@ -189,23 +190,19 @@ export const DatePicker: FC<IDatePicker> = ({
             <Calendar
               value={value}
               onChange={handleCalendarChange}
-              calendarClassName={calendarClassName}
               calendarTodayClassName={calendarTodayClassName}
               calendarSelectedDayClassName={calendarSelectedDayClassName}
               calendarRangeStartClassName={calendarRangeStartClassName}
               calendarRangeBetweenClassName={calendarRangeBetweenClassName}
               calendarRangeEndClassName={calendarRangeEndClassName}
               disabledDays={disabledDays}
-              colorPrimary={colorPrimary}
-              colorPrimaryLight={colorPrimaryLight}
-              slideAnimationDuration={slideAnimationDuration}
               onDisabledDayError={onDisabledDayError}
               minimumDate={minimumDate}
               maximumDate={maximumDate}
               selectorStartingYear={selectorStartingYear}
               selectorEndingYear={selectorEndingYear}
               shouldHighlightWeekends={shouldHighlightWeekends}
-              renderFooter={renderFooter}
+              renderFooter={footer}
               customDaysClassName={customDaysClassName}
             />
           </div>
